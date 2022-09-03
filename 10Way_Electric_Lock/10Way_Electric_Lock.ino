@@ -988,60 +988,70 @@ switch(dockInt){
       do{
       digitalWrite(A0, HIGH);
       }while(!(digitalRead(23)));
+      delay(3000);
       digitalWrite(A0, LOW);
       break;
     case 2:
       do{
       digitalWrite(A1, HIGH);
       }while(!(digitalRead(25)));
+      delay(3000);
       digitalWrite(A1, LOW);
       break;
     case 3:
       do{
       digitalWrite(A2, HIGH);
       }while(!(digitalRead(27)));
+      delay(3000);
       digitalWrite(A2, LOW);
       break;
     case 4:
       do{
       digitalWrite(A3, HIGH);
       }while(!(digitalRead(29)));
+      delay(3000);
       digitalWrite(A3, LOW);
       break;
     case 5:
       do{
       digitalWrite(A4, HIGH);
       }while(!(digitalRead(31)));
+      delay(3000);
       digitalWrite(A4, LOW);
       break;
     case 6:
       do{
       digitalWrite(A5, HIGH);
       }while(!(digitalRead(33)));
+      delay(3000);
       digitalWrite(A5, LOW);
       break;
     case 7:
       do{
       digitalWrite(A6, HIGH);
       }while(!(digitalRead(35)));
+      delay(3000);
       digitalWrite(A6, LOW);
       break;
     case 8:
       do{
       digitalWrite(A7, HIGH);
       }while(!(digitalRead(37)));
+      delay(3000);
       digitalWrite(A7, LOW);
       break;
     case 9:
       do{
       digitalWrite(A8, HIGH);
       }while(!(digitalRead(39)));
+      delay(3000);
       digitalWrite(A8, LOW);
       break;
     case 10:
       do{
       digitalWrite(A9, HIGH);
       }while(!(digitalRead(41)));
+      delay(3000);
       digitalWrite(A9, LOW);
       break;
   }
@@ -1102,7 +1112,7 @@ switch(dockInt){
     case 9:
       do{
       digitalWrite(A8, HIGH);
-      }while(digitalRead(49));
+      }while(digitalRead(39));
       digitalWrite(A8, LOW);
       break;
     case 10:
