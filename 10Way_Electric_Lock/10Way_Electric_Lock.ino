@@ -1035,7 +1035,7 @@ switch(dockInt){
     case 9:
       do{
       digitalWrite(A8, HIGH);
-      }while(!(digitalRead(49)));
+      }while(!(digitalRead(39)));
       digitalWrite(A8, LOW);
       break;
     case 10:
