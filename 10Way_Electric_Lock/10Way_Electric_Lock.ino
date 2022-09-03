@@ -7,6 +7,7 @@
  * * *  V2 * 2021.08.25. * * * * 
  * * *  V3 * 2021.09.01. * * * * 
  * * *  V4 * 2021.09.14. * * * *
+ * * *  V5 * 2022.09.03. * * * *
  * * * * * * * * * * * * * * * */
 
 #include <Wire.h>
@@ -89,6 +90,8 @@ volatile unsigned int  dockInt  = 0;
 volatile unsigned long currentMillis  = 0;
 volatile unsigned long previousMillis = 0;
 
+volatile unsigned long usesNo = 0;
+
 void setup(){
   
   setScreen();
@@ -138,6 +141,7 @@ void setup(){
   fileWrite("pw8.txt");
   fileWrite("pw9.txt");
   fileWrite("pw10.txt");
+  fileWrite("uses.txt");
 
 //Jelszavak visszanyerése az SD kártyáról pl. áramszünet után------------------------
   password_1  = recoveryPassword("pw1.txt");
@@ -195,6 +199,22 @@ void rewritePassword(String rwpw, String newpw){
 
   if (myFile) {
     myFile.print(newpw);
+    myFile.close();
+  } else {
+    drawScreen(3);
+    delay(5000);
+  }  
+}
+
+//Használatok számának rögzítése az SD kártyára-----------------------------------
+void writeUses(){
+
+  usesNo += 1;
+  
+  myFile = SD.open("uses.txt", O_READ | O_WRITE | O_CREAT | O_TRUNC);
+
+  if (myFile) {
+    myFile.print(usesNo);
     myFile.close();
   } else {
     drawScreen(3);
@@ -954,6 +974,9 @@ switch(dockInt){
       rewritePassword("pw10.txt", password_10);
       break;
   }
+  
+  writeUses();
+  
   mainMenu();
 }
 
