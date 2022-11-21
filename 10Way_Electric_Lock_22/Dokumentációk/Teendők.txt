@@ -1,0 +1,8 @@
+1. A PCB-n a 2-es szenzor felső két csavarterminálja között (felülről nézve) 12V mérhető úgy is, hogy a szenzor nincsen rákötve. Ugye a szenzor alapállapotában 0V kellene, hogy legyen ezen a két pinen és ha érzékel, akkor jelenne csak meg a 12V. Javítani kell mert így használhatatlan a 2-es dokk. 
+2. Több időt kell hagyni a szövegek elolvasására. Legyen még +2.5s -el több és legyen kikommentelve ez is, hogy hol lehet módosítani. 
+3. A nyelvválasztó képernyőn 2x kell megnyomni a nyelvválasztó gombot mert az első nyomásra csak eltűnik a szöveg és a másodikra reagál. 
+4. Polarizált lencséjű napszemüveggel nem olvasható a kijelző, teljesen fekete. Szeretném látni, hogy milyen (átmérőben is nagyobb) alternatívák vannak amelyek működnek szemüvegben is. 
+5. Logolja a rendszer a memóriakártyára, hogy hány alkalommal történt parkolás. 
+6. Kellene a PCB-re egy kis buzzer is ami a billentyűzet gombnyomásaira reagál. Ezt rá lehet forrasztani utólag? 
+7. Meg kellene oldani, hogy ne karnyi vastag kábelkötegekkel kelljen dolgozni. Van erre mód?
+8. A 7-es ponttal együtt a PCB méretét is csökkenteni kellene. Pl. szenzoroknak elég 1 pin (jel) a másik kettő (GND és +12V) az amúgy is közös.  
