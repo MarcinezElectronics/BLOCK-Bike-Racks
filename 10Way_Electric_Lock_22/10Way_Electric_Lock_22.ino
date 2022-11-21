@@ -18,7 +18,29 @@
 
 #define INTERVAL    30000 //5000
 
-U8GLIB_KS0108_128 u8g(22, 24, 26, 28, 30, 32, 34, 36,  48, 40, 38, 46, 44); //
+#define S0  41
+#define S1  40
+#define S2  39
+#define S3  38
+#define S4  37
+#define S5  36
+#define S6  35
+#define S7  34
+#define S8  33
+#define S9  32
+
+#define L0  22
+#define L1  23
+#define L2  24
+#define L3  25
+#define L4  26
+#define L5  27
+#define L6  28
+#define L7  29
+#define L8  30
+#define L9  31
+
+U8GLIB_KS0108_128 u8g(A0, A1, A2, A3, A4, A5, A6, A7, A13, A8, A9, A12, A11, A10); //U8GLIB(&u8g_dev_ks0108_128x64_fast, d0, d1, d2, d3, d4, d5, d6, d7, en, cs1, cs2, di, rw, reset)
 
 File myFile;
 
@@ -56,8 +78,8 @@ char keys[ROWS][COLS] = {
   {'*','0','#'}
 };
 
-byte rowPins[ROWS] = {6, 5, 4, 3};
-byte colPins[COLS] = {9, 8, 7};
+byte rowPins[ROWS] = {9, 8, 7, 6};
+byte colPins[COLS] = {5, 4, 3};
  
 Keypad keypad = Keypad( makeKeymap(keys), rowPins, colPins, ROWS, COLS );
 
@@ -82,7 +104,6 @@ volatile char key;
 boolean i = false;
 
 volatile unsigned char mainBack = 0;
-volatile unsigned char language = 0;
 
 volatile unsigned int  counter  = 0; 
 volatile unsigned int  dockInt  = 0;
@@ -242,22 +263,17 @@ void mainMenu(){
 
   mainBack = 0;
   
-  language = 0;
-
-  drawScreen(5);
-  
-  while(language == 0){
+  while(i == false){
     key = keypad.getKey();
     switch(key){
-      case '0':
+      case '*':
         counter  = 0;
         dockInt  = 0;
         setDock  = "";
         secPassword = "";
         masterDockSelect();
         break;     
-      case '*':
-            language = 1;
+      case '#':
             counter  = 0;
             dockInt  = 0;
             setDock  = ""; 
@@ -265,19 +281,11 @@ void mainMenu(){
             secPassword = "";
             dockSelect();
         break;
-      case '#':
-            language = 2;
-            counter  = 0;
-            dockInt  = 0;
-            setDock  = "";
-            setPassword = "";
-            secPassword = ""; 
-            dockSelect();
-        break;
       default:
-            language = 0;
+            i = false;
         break;
-    }  
+    }
+    //delay(20);  
   } 
 }
 
@@ -286,8 +294,7 @@ void dockSelect(){
 
 i = true;
 
-if      (language == 1) {drawScreen(6);}
-else if (language == 2) {drawScreen(15);}
+drawScreen(6);
 
 while(i){
 
@@ -402,26 +409,26 @@ if (key){
 //Induktív érzékelők kezelése---------------------------------------------------------
 void dockCheck(){
   
-  if      ((digitalRead(23) == HIGH) && (dockInt == 1)){newPassword();}
-  else if ((digitalRead(23) == LOW)  && (dockInt == 1)){unlockDock();}
-  else if ((digitalRead(25) == HIGH) && (dockInt == 2)){newPassword();}
-  else if ((digitalRead(25) == LOW)  && (dockInt == 2)){unlockDock();}
-  else if ((digitalRead(27) == HIGH) && (dockInt == 3)){newPassword();}
-  else if ((digitalRead(27) == LOW)  && (dockInt == 3)){unlockDock();}
-  else if ((digitalRead(29) == HIGH) && (dockInt == 4)){newPassword();}
-  else if ((digitalRead(29) == LOW)  && (dockInt == 4)){unlockDock();}
-  else if ((digitalRead(31) == HIGH) && (dockInt == 5)){newPassword();}
-  else if ((digitalRead(31) == LOW)  && (dockInt == 5)){unlockDock();}
-  else if ((digitalRead(33) == HIGH) && (dockInt == 6)){newPassword();}
-  else if ((digitalRead(33) == LOW)  && (dockInt == 6)){unlockDock();}
-  else if ((digitalRead(35) == HIGH) && (dockInt == 7)){newPassword();}
-  else if ((digitalRead(35) == LOW)  && (dockInt == 7)){unlockDock();}
-  else if ((digitalRead(37) == HIGH) && (dockInt == 8)){newPassword();}
-  else if ((digitalRead(37) == LOW)  && (dockInt == 8)){unlockDock();}
-  else if ((digitalRead(39) == HIGH) && (dockInt == 9)){newPassword();}
-  else if ((digitalRead(39) == LOW)  && (dockInt == 9)){unlockDock();}
-  else if ((digitalRead(41) == HIGH) && (dockInt == 10)){newPassword();}
-  else if ((digitalRead(41) == LOW)  && (dockInt == 10)){unlockDock();}
+  if      ((digitalRead(S0) == HIGH) && (dockInt == 1)){newPassword();}
+  else if ((digitalRead(S0) == LOW)  && (dockInt == 1)){unlockDock();}
+  else if ((digitalRead(S1) == HIGH) && (dockInt == 2)){newPassword();}
+  else if ((digitalRead(S1) == LOW)  && (dockInt == 2)){unlockDock();}
+  else if ((digitalRead(S2) == HIGH) && (dockInt == 3)){newPassword();}
+  else if ((digitalRead(S2) == LOW)  && (dockInt == 3)){unlockDock();}
+  else if ((digitalRead(S3) == HIGH) && (dockInt == 4)){newPassword();}
+  else if ((digitalRead(S3) == LOW)  && (dockInt == 4)){unlockDock();}
+  else if ((digitalRead(S4) == HIGH) && (dockInt == 5)){newPassword();}
+  else if ((digitalRead(S4) == LOW)  && (dockInt == 5)){unlockDock();}
+  else if ((digitalRead(S5) == HIGH) && (dockInt == 6)){newPassword();}
+  else if ((digitalRead(S5) == LOW)  && (dockInt == 6)){unlockDock();}
+  else if ((digitalRead(S6) == HIGH) && (dockInt == 7)){newPassword();}
+  else if ((digitalRead(S6) == LOW)  && (dockInt == 7)){unlockDock();}
+  else if ((digitalRead(S7) == HIGH) && (dockInt == 8)){newPassword();}
+  else if ((digitalRead(S7) == LOW)  && (dockInt == 8)){unlockDock();}
+  else if ((digitalRead(S8) == HIGH) && (dockInt == 9)){newPassword();}
+  else if ((digitalRead(S8) == LOW)  && (dockInt == 9)){unlockDock();}
+  else if ((digitalRead(S9) == HIGH) && (dockInt == 10)){newPassword();}
+  else if ((digitalRead(S9) == LOW)  && (dockInt == 10)){unlockDock();}
   else{}   
 }
 
@@ -432,8 +439,7 @@ setStar = "";
 
 i = true;
 
-if(language == 1){drawScreen(7);}
-else if(language == 2){drawScreen(16);}
+drawScreen(7);
 
 while(i){
 
@@ -535,7 +541,7 @@ if (key){
     case '*':
     if((counter <= 4) && (counter > 0)){
 
-      if ((scanPassword(dockInt, secPassword) == true) && (language == 1)){
+      if (scanPassword(dockInt, secPassword) == true){
         drawScreen(11);
         delay(5000);
         unlockingClosedDock(); 
@@ -543,15 +549,8 @@ if (key){
         mainBack = 0;
         i = false; 
       }
-      else if ((scanPassword(dockInt, secPassword) == true) && (language == 2)){
-        drawScreen(17);
-        delay(5000);
-        unlockingClosedDock();
-        counter = 0;
-        mainBack = 0;
-        i = false;  
-      }
-      else if ((scanPassword(dockInt, secPassword) == false) && (language == 1)){
+
+      else if (scanPassword(dockInt, secPassword) == false){
         drawScreen(10);        
         delay(5000);
         counter = 0;
@@ -560,15 +559,7 @@ if (key){
         secPassword = "";
         unlockDock();  
       }
-      else if ((scanPassword(dockInt, secPassword) == false) && (language == 2)){
-        drawScreen(18);
-        delay(5000);  
-        counter = 0;
-        mainBack = 0;
-        i = true;
-        secPassword = "";
-        unlockDock();  
-      }
+
       else{} 
     }
       break;
@@ -647,8 +638,7 @@ setStar = "";
 
 i = true;
 
-if(language == 1){drawScreen(8);}
-else if(language == 2){drawScreen(19);}
+drawScreen(8);
 
 while(i){
 
@@ -778,8 +768,7 @@ setStar = "";
 
 i = true;
 
-if(language == 1){drawScreen(9);}
-else if(language == 2){drawScreen(20);}
+drawScreen(9);
 
 while(i){
 
@@ -879,29 +868,20 @@ if (key){
     case '*': //jelszó mentés
     if((counter <= 4) && (counter > 0)){
       if(secPassword == setPassword) {
-        if(language == 1)     {
-          drawScreen(12);
-          delay(5000);      //5 másodperc késleltetés a nyitás előtt
-          unlockingOpenedDock();  //Nyitás, ha a megadott jelszavak egyeznek (magyar mód)
-          }
-        else if(language == 2){
-          drawScreen(21);
-          delay(5000);      //5 másodperc késleltetés a nyitás előtt
-          unlockingOpenedDock();  //Nyitás, ha a megadott jelszavak egyeznek (angol mód)
-          }
+        
+        drawScreen(12);
+        delay(5000);      //5 másodperc késleltetés a nyitás előtt
+        unlockingOpenedDock();  //Nyitás, ha a megadott jelszavak egyeznek (magyar mód)
+               
         counter = 0;
         mainBack = 0;
         i = false;
         }
       else if(secPassword != setPassword){
-        if(language == 1)     {
-          drawScreen(10);
-          delay(3000);
-          }
-        else if(language == 2){
-          drawScreen(18);
-          delay(3000);
-          }
+        
+        drawScreen(10);
+        delay(3000);
+        
         counter = 0;
         mainBack = 0;
         i = true;
@@ -986,73 +966,73 @@ void unlockingClosedDock(){
 switch(dockInt){
     case 1:
       do{
-      digitalWrite(A0, HIGH);
+      digitalWrite(L0, HIGH);
       }while(!(digitalRead(23)));
       delay(3000);
-      digitalWrite(A0, LOW);
+      digitalWrite(L0, LOW);
       break;
     case 2:
       do{
-      digitalWrite(A1, HIGH);
+      digitalWrite(L1, HIGH);
       }while(!(digitalRead(25)));
       delay(3000);
-      digitalWrite(A1, LOW);
+      digitalWrite(L1, LOW);
       break;
     case 3:
       do{
-      digitalWrite(A2, HIGH);
+      digitalWrite(L2, HIGH);
       }while(!(digitalRead(27)));
       delay(3000);
-      digitalWrite(A2, LOW);
+      digitalWrite(L2, LOW);
       break;
     case 4:
       do{
-      digitalWrite(A3, HIGH);
+      digitalWrite(L3, HIGH);
       }while(!(digitalRead(29)));
       delay(3000);
-      digitalWrite(A3, LOW);
+      digitalWrite(L3, LOW);
       break;
     case 5:
       do{
-      digitalWrite(A4, HIGH);
+      digitalWrite(L4, HIGH);
       }while(!(digitalRead(31)));
       delay(3000);
-      digitalWrite(A4, LOW);
+      digitalWrite(L4, LOW);
       break;
     case 6:
       do{
-      digitalWrite(A5, HIGH);
+      digitalWrite(L5, HIGH);
       }while(!(digitalRead(33)));
       delay(3000);
-      digitalWrite(A5, LOW);
+      digitalWrite(L5, LOW);
       break;
     case 7:
       do{
-      digitalWrite(A6, HIGH);
+      digitalWrite(L6, HIGH);
       }while(!(digitalRead(35)));
       delay(3000);
-      digitalWrite(A6, LOW);
+      digitalWrite(L6, LOW);
       break;
     case 8:
       do{
-      digitalWrite(A7, HIGH);
+      digitalWrite(L7, HIGH);
       }while(!(digitalRead(37)));
       delay(3000);
-      digitalWrite(A7, LOW);
+      digitalWrite(L7, LOW);
       break;
     case 9:
       do{
-      digitalWrite(A8, HIGH);
+      digitalWrite(L8, HIGH);
       }while(!(digitalRead(39)));
       delay(3000);
-      digitalWrite(A8, LOW);
+      digitalWrite(L8, LOW);
       break;
     case 10:
       do{
-      digitalWrite(A9, HIGH);
+      digitalWrite(L9, HIGH);
       }while(!(digitalRead(41)));
       delay(3000);
-      digitalWrite(A9, LOW);
+      digitalWrite(L9, LOW);
       break;
   }
 }
@@ -1063,63 +1043,63 @@ void unlockingOpenedDock(){
 switch(dockInt){
     case 1:
       do{
-      digitalWrite(A0, HIGH);
+      digitalWrite(L0, HIGH);
       }while(digitalRead(23));
-      digitalWrite(A0, LOW);
+      digitalWrite(L0, LOW);
       break;
     case 2:
       do{
-      digitalWrite(A1, HIGH);
+      digitalWrite(L1, HIGH);
       }while(digitalRead(25));
-      digitalWrite(A1, LOW);
+      digitalWrite(L1, LOW);
       break;
     case 3:
       do{
-      digitalWrite(A2, HIGH);
+      digitalWrite(L2, HIGH);
       }while(digitalRead(27));
-      digitalWrite(A2, LOW);
+      digitalWrite(L2, LOW);
       break;
     case 4:
       do{
-      digitalWrite(A3, HIGH);
+      digitalWrite(L3, HIGH);
       }while(digitalRead(29));
-      digitalWrite(A3, LOW);
+      digitalWrite(L3, LOW);
       break;
     case 5:
       do{
-      digitalWrite(A4, HIGH);
+      digitalWrite(L4, HIGH);
       }while(digitalRead(31));
-      digitalWrite(A4, LOW);
+      digitalWrite(L4, LOW);
       break;
     case 6:
       do{
-      digitalWrite(A5, HIGH);
+      digitalWrite(L5, HIGH);
       }while(digitalRead(33));
-      digitalWrite(A5, LOW);
+      digitalWrite(L5, LOW);
       break;
     case 7:
       do{
-      digitalWrite(A6, HIGH);
+      digitalWrite(L6, HIGH);
       }while(digitalRead(35));
-      digitalWrite(A6, LOW);
+      digitalWrite(L6, LOW);
       break;
     case 8:
       do{
-      digitalWrite(A7, HIGH);
+      digitalWrite(L7, HIGH);
       }while(digitalRead(37));
-      digitalWrite(A7, LOW);
+      digitalWrite(L7, LOW);
       break;
     case 9:
       do{
-      digitalWrite(A8, HIGH);
+      digitalWrite(L8, HIGH);
       }while(digitalRead(39));
-      digitalWrite(A8, LOW);
+      digitalWrite(L8, LOW);
       break;
     case 10:
       do{
-      digitalWrite(A9, HIGH);
+      digitalWrite(L9, HIGH);
       }while(digitalRead(41));
-      digitalWrite(A9, LOW);
+      digitalWrite(L9, LOW);
       break;
   }
 }
@@ -1506,49 +1486,6 @@ void drawScreen(char drawState){
     u8g.drawStr( 0, 25, "   K""\xe9""rem adja meg a   ");
     u8g.drawStr( 0, 36, " felold""\xe1""shoz az admin");
     u8g.drawStr( 0, 47, "       jelsz""\xf3""t!       ");
-    break;
-//Angol-------------------------------------------------------------------------
-    case 15:
-    u8g.drawStr( 0, 30, " Enter dock's number ");
-    u8g.drawStr( 0, 41, " you want to unlock! ");
-    break;
-    case 16:
-    u8g.drawStr( 0, 30, "  Please enter your  ");
-    u8g.drawStr( 0, 41, " PIN code to unlock! ");
-    break;
-    case 17:
-    u8g.drawStr( 0, 8,  "  Super, your bike  ");
-    u8g.drawStr( 0, 19, " parking process is ");
-    u8g.drawStr( 0, 30, "over. Please take it");
-    u8g.drawStr( 0, 41, " out of the dock and");
-    u8g.drawStr( 0, 52, "leave the gate open!");
-    u8g.drawStr( 0, 63, "  Have a nice trip! "); 
-    break;
-    case 18:
-    u8g.drawStr( 0, 21, " Oops, it looks like");
-    u8g.drawStr( 0, 32, "  you entered the   ");
-    u8g.drawStr( 0, 43, "     wrong code.    ");
-    u8g.drawStr( 0, 54, "  Please try again! ");  
-    break;
-    case 19:
-    u8g.drawStr( 0, 14,  "   Please enter a   ");
-    u8g.drawStr( 0, 25, "  4-digit PIN code! ");
-    u8g.drawStr( 0, 36, " After parking, you ");
-    u8g.drawStr( 0, 47, "will be able to open");
-    u8g.drawStr( 0, 58, " the dock with this.");
-    break;
-    case 20:
-    u8g.drawStr( 0, 30, "  Please enter the  ");
-    u8g.drawStr( 0, 41, "     PIN again!     ");
-    break;
-    case 21:
-    u8g.drawStr( 0, 21,  " Ready! Please place"); 
-    u8g.drawStr( 0, 32, " the bicycle in the "); 
-    u8g.setPrintPos( 20, 43);
-    u8g.print(setDock);
-    u8g.print('.');
-    u8g.drawStr( 35, 43,"storage and   ");
-    u8g.drawStr( 0, 54, "   close the gate!  "); 
     break;
     default:
     break;
