@@ -18,6 +18,14 @@
 
 #define INTERVAL    30000 //5000
 
+#define R1  4
+#define R2  9
+#define R3  8
+#define R4  6  
+#define C1  5
+#define C2  3 
+#define C3  7
+
 #define S0  41
 #define S1  40
 #define S2  39
@@ -40,7 +48,15 @@
 #define L8  30
 #define L9  31
 
+#define BUZZER  A14
+
+#define RTC_CLK 11 
+#define RTC_DAT 12
+#define RTC_RST 13
+
 U8GLIB_KS0108_128 u8g(A0, A1, A2, A3, A4, A5, A6, A7, A13, A8, A9, A12, A11, A10); //U8GLIB(&u8g_dev_ks0108_128x64_fast, d0, d1, d2, d3, d4, d5, d6, d7, en, cs1, cs2, di, rw, reset)
+
+//U8GLIB_ST7920_128X64 u8g(A0, A1, A2, A3, A4, A5, A6, A7, A13, A8, A9, A12, A11, A10); //U8GLIB(&u8g_dev_ks0108_128x64_fast, d0, d1, d2, d3, d4, d5, d6, d7, en, cs1, cs2, di, rw, reset)
 
 File myFile;
 
@@ -67,6 +83,7 @@ void delChar();
 void showStar();
 void showDock();
 void setScreen();
+void buzzer();
 
 const byte ROWS = 4;
 const byte COLS = 3;
@@ -78,8 +95,8 @@ char keys[ROWS][COLS] = {
   {'*','0','#'}
 };
 
-byte rowPins[ROWS] = {9, 8, 7, 6};
-byte colPins[COLS] = {5, 4, 3};
+byte rowPins[ROWS] = {R1, R2, R3, R4};
+byte colPins[COLS] = {C1, C2, C3};
  
 Keypad keypad = Keypad( makeKeymap(keys), rowPins, colPins, ROWS, COLS );
 
@@ -117,27 +134,29 @@ void setup(){
   
   setScreen();
    
-  pinMode(23, INPUT);
-  pinMode(25, INPUT);
-  pinMode(27, INPUT);
-  pinMode(29, INPUT);
-  pinMode(31, INPUT);
-  pinMode(33, INPUT);
-  pinMode(35, INPUT);
-  pinMode(37, INPUT);
-  pinMode(39, INPUT);
-  pinMode(41, INPUT);
+  pinMode(S0, INPUT);
+  pinMode(S1, INPUT);
+  pinMode(S2, INPUT);
+  pinMode(S3, INPUT);
+  pinMode(S4, INPUT);
+  pinMode(S5, INPUT);
+  pinMode(S6, INPUT);
+  pinMode(S7, INPUT);
+  pinMode(S8, INPUT);
+  pinMode(S9, INPUT);
 
-  pinMode(A0, OUTPUT);
-  pinMode(A1, OUTPUT);
-  pinMode(A2, OUTPUT);
-  pinMode(A3, OUTPUT);
-  pinMode(A4, OUTPUT);
-  pinMode(A5, OUTPUT);
-  pinMode(A6, OUTPUT);
-  pinMode(A7, OUTPUT);
-  pinMode(A8, OUTPUT);
-  pinMode(A9, OUTPUT);
+  pinMode(L0, OUTPUT);
+  pinMode(L1, OUTPUT);
+  pinMode(L2, OUTPUT);
+  pinMode(L3, OUTPUT);
+  pinMode(L4, OUTPUT);
+  pinMode(L5, OUTPUT);
+  pinMode(L6, OUTPUT);
+  pinMode(L7, OUTPUT);
+  pinMode(L8, OUTPUT);
+  pinMode(L9, OUTPUT);
+
+  pinMode(BUZZER, OUTPUT);
 
 //SD kártya inicializálás-----------------------------------------------------------
   drawScreen(0);
@@ -262,11 +281,14 @@ void resetIdleSwitch(){
 void mainMenu(){
 
   mainBack = 0;
+
+  drawScreen(5);
   
   while(i == false){
     key = keypad.getKey();
     switch(key){
       case '*':
+      buzzer();
         counter  = 0;
         dockInt  = 0;
         setDock  = "";
@@ -274,6 +296,7 @@ void mainMenu(){
         masterDockSelect();
         break;     
       case '#':
+      buzzer();
             counter  = 0;
             dockInt  = 0;
             setDock  = ""; 
@@ -284,8 +307,7 @@ void mainMenu(){
       default:
             i = false;
         break;
-    }
-    //delay(20);  
+    } 
   } 
 }
 
@@ -309,8 +331,8 @@ if (key){
   resetIdleSwitch(); 
   
   switch(key){
-    
     case '0':
+    buzzer();
     if((counter < 2) && (dockInt == 1)){
       setDock += 0;
       counter++;
@@ -319,6 +341,7 @@ if (key){
       break;
     
     case '1':
+    buzzer();
     if((counter < 2) && (dockInt < 1)){
       setDock += 1;
       counter++;
@@ -326,6 +349,7 @@ if (key){
       break;
     
     case '2':
+    buzzer();
     if((counter < 2) && (dockInt < 1)){
       setDock += 2;
       counter++;
@@ -333,6 +357,7 @@ if (key){
       break;
     
     case '3':
+    buzzer();
     if((counter < 2) && (dockInt < 1)){
       setDock += 3;
       counter++;
@@ -340,6 +365,7 @@ if (key){
       break;
     
     case '4':
+    buzzer();
     if((counter < 2) && (dockInt < 1)){
       setDock += 4;
       counter++;
@@ -347,6 +373,7 @@ if (key){
       break;
     
     case '5':
+    buzzer();
     if((counter < 2) && (dockInt < 1)){
       setDock += 5;
       counter++;
@@ -354,6 +381,7 @@ if (key){
       break;
     
     case '6':
+    buzzer();
     if((counter < 2) && (dockInt < 1)){
       setDock += 6;
       counter++;
@@ -361,6 +389,7 @@ if (key){
       break;
     
     case '7':
+    buzzer();
     if((counter < 2) && (dockInt < 1)){
       setDock += 7;
       counter++;
@@ -368,6 +397,7 @@ if (key){
       break;
     
     case '8':
+    buzzer();
     if((counter < 2) && (dockInt < 1)){
       setDock += 8;
       counter++;
@@ -375,6 +405,7 @@ if (key){
       break;
     
     case '9':
+    buzzer();
     if((counter < 2) && (dockInt < 1)){
       setDock += 9;
       counter++;
@@ -382,6 +413,7 @@ if (key){
       break;
     
     case '*':
+    buzzer();
     if((counter <= 2) && (counter > 0)){
       counter = 0;
       mainBack = 0;
@@ -389,6 +421,7 @@ if (key){
     }
     
     case '#': //karakter törlés
+    buzzer();
     if(counter > 0){
       delChar();
       counter--;
@@ -458,6 +491,7 @@ if (key){
   switch(key){
     
     case '0':
+    buzzer();
     if(counter < 4){
       secPassword += 0;
       setStar += '*';
@@ -467,6 +501,7 @@ if (key){
       break;
     
     case '1':
+    buzzer();
     if(counter < 4){
       secPassword += 1;
       setStar += '*';
@@ -475,6 +510,7 @@ if (key){
       break;
     
     case '2':
+    buzzer();
     if(counter < 4){
       secPassword += 2;
       setStar += '*';
@@ -483,6 +519,7 @@ if (key){
       break;
     
     case '3':
+    buzzer();
     if(counter < 4){
       secPassword += 3;
       setStar += '*';
@@ -491,6 +528,7 @@ if (key){
       break;
     
     case '4':
+    buzzer();
     if(counter < 4){
       secPassword += 4;
       setStar += '*';
@@ -499,6 +537,7 @@ if (key){
       break;
     
     case '5':
+    buzzer();
     if(counter < 4){
       secPassword += 5;
       setStar += '*';
@@ -507,6 +546,7 @@ if (key){
       break;
     
     case '6':
+    buzzer();
     if(counter < 4){
       secPassword += 6;
       setStar += '*';
@@ -515,6 +555,7 @@ if (key){
       break;
     
     case '7':
+    buzzer();
     if(counter < 4){
       secPassword += 7;
       setStar += '*';
@@ -523,6 +564,8 @@ if (key){
       break;
     
     case '8':
+    buzzer();
+    buzzer();
     if(counter < 4){
       secPassword += 8;
       setStar += '*';
@@ -531,6 +574,7 @@ if (key){
       break;
     
     case '9':
+    buzzer();
     if(counter < 4){
       secPassword += 9;
       setStar += '*';
@@ -539,6 +583,7 @@ if (key){
       break;
     
     case '*':
+    buzzer();
     if((counter <= 4) && (counter > 0)){
 
       if (scanPassword(dockInt, secPassword) == true){
@@ -565,6 +610,7 @@ if (key){
       break;
     
     case '#': //karakter törlés
+    buzzer();
     if(counter > 0){
       delChar();     
       counter--;
@@ -655,6 +701,7 @@ if (key){
   switch(key){
     
     case '0':
+    buzzer();
     if(counter < 4){
       setPassword += 0;
       setStar += '*';
@@ -664,6 +711,7 @@ if (key){
       break;
     
     case '1':
+    buzzer();
     if(counter < 4){
       setPassword += 1;
       setStar += '*';
@@ -672,6 +720,7 @@ if (key){
       break;
     
     case '2':
+    buzzer();
     if(counter < 4){
       setPassword += 2;
       setStar += '*';
@@ -680,6 +729,7 @@ if (key){
       break;
     
     case '3':
+    buzzer();
     if(counter < 4){
       setPassword += 3;
       setStar += '*';
@@ -688,6 +738,7 @@ if (key){
       break;
     
     case '4':
+    buzzer();
     if(counter < 4){
       setPassword += 4;
       setStar += '*';
@@ -696,6 +747,7 @@ if (key){
       break;
     
     case '5':
+    buzzer();
     if(counter < 4){
       setPassword += 5;
       setStar += '*';
@@ -704,6 +756,7 @@ if (key){
       break;
     
     case '6':
+    buzzer();
     if(counter < 4){
       setPassword += 6;
       setStar += '*';
@@ -712,6 +765,7 @@ if (key){
       break;
     
     case '7':
+    buzzer();
     if(counter < 4){
       setPassword += 7;
       setStar += '*';
@@ -720,6 +774,7 @@ if (key){
       break;
     
     case '8':
+    buzzer();
     if(counter < 4){
       setPassword += 8;
       setStar += '*';
@@ -728,6 +783,7 @@ if (key){
       break;
     
     case '9':
+    buzzer();
     if(counter < 4){
       setPassword += 9;
       setStar += '*';
@@ -736,6 +792,7 @@ if (key){
       break;
     
     case '*': //jelszó mentés
+    buzzer();
     if((counter <= 4) && (counter > 0)){
       counter = 0;
       mainBack = 0;
@@ -744,6 +801,7 @@ if (key){
       break;
     
     case '#': //karakter törlés
+    buzzer();
     if(counter > 0){
       delChar();
       counter--;
@@ -785,6 +843,7 @@ if (key){
   switch(key){
     
     case '0':
+    buzzer();
     if(counter < 4){
       secPassword += 0;
       setStar += '*';
@@ -794,6 +853,7 @@ if (key){
       break;
     
     case '1':
+    buzzer();
     if(counter < 4){
       secPassword += 1;
       setStar += '*';
@@ -802,6 +862,7 @@ if (key){
       break;
     
     case '2':
+    buzzer();
     if(counter < 4){
       secPassword += 2;
       setStar += '*';
@@ -810,6 +871,7 @@ if (key){
       break;
     
     case '3':
+    buzzer();
     if(counter < 4){
       secPassword += 3;
       setStar += '*';
@@ -818,6 +880,7 @@ if (key){
       break;
     
     case '4':
+    buzzer();
     if(counter < 4){
       secPassword += 4;
       setStar += '*';
@@ -826,6 +889,7 @@ if (key){
       break;
     
     case '5':
+    buzzer();
     if(counter < 4){
       secPassword += 5;
       setStar += '*';
@@ -834,6 +898,7 @@ if (key){
       break;
     
     case '6':
+    buzzer();
     if(counter < 4){
       secPassword += 6;
       setStar += '*';
@@ -842,6 +907,7 @@ if (key){
       break;
     
     case '7':
+    buzzer();
     if(counter < 4){
       secPassword += 7;
       setStar += '*';
@@ -850,6 +916,7 @@ if (key){
       break;
     
     case '8':
+    buzzer();
     if(counter < 4){
       secPassword += 8;
       setStar += '*';
@@ -858,6 +925,7 @@ if (key){
       break;
     
     case '9':
+    buzzer();
     if(counter < 4){
       secPassword += 9;
       setStar += '*';
@@ -866,6 +934,7 @@ if (key){
       break;
     
     case '*': //jelszó mentés
+    buzzer();
     if((counter <= 4) && (counter > 0)){
       if(secPassword == setPassword) {
         
@@ -892,6 +961,7 @@ if (key){
       break;
     
     case '#': //karakter törlés
+    buzzer();
     if(counter > 0){
       delChar();
       counter--;
@@ -966,71 +1036,71 @@ void unlockingClosedDock(){
 switch(dockInt){
     case 1:
       do{
-      digitalWrite(L0, HIGH);
-      }while(!(digitalRead(23)));
+      digitalWrite(L9, HIGH);
+      }while(!(digitalRead(S0)));
       delay(3000);
-      digitalWrite(L0, LOW);
+      digitalWrite(L9, LOW);
       break;
     case 2:
       do{
       digitalWrite(L1, HIGH);
-      }while(!(digitalRead(25)));
+      }while(!(digitalRead(S1)));
       delay(3000);
       digitalWrite(L1, LOW);
       break;
     case 3:
       do{
       digitalWrite(L2, HIGH);
-      }while(!(digitalRead(27)));
+      }while(!(digitalRead(S2)));
       delay(3000);
       digitalWrite(L2, LOW);
       break;
     case 4:
       do{
       digitalWrite(L3, HIGH);
-      }while(!(digitalRead(29)));
+      }while(!(digitalRead(S3)));
       delay(3000);
       digitalWrite(L3, LOW);
       break;
     case 5:
       do{
       digitalWrite(L4, HIGH);
-      }while(!(digitalRead(31)));
+      }while(!(digitalRead(S4)));
       delay(3000);
       digitalWrite(L4, LOW);
       break;
     case 6:
       do{
       digitalWrite(L5, HIGH);
-      }while(!(digitalRead(33)));
+      }while(!(digitalRead(S5)));
       delay(3000);
       digitalWrite(L5, LOW);
       break;
     case 7:
       do{
       digitalWrite(L6, HIGH);
-      }while(!(digitalRead(35)));
+      }while(!(digitalRead(S6)));
       delay(3000);
       digitalWrite(L6, LOW);
       break;
     case 8:
       do{
       digitalWrite(L7, HIGH);
-      }while(!(digitalRead(37)));
+      }while(!(digitalRead(S7)));
       delay(3000);
       digitalWrite(L7, LOW);
       break;
     case 9:
       do{
       digitalWrite(L8, HIGH);
-      }while(!(digitalRead(39)));
+      }while(!(digitalRead(S8)));
       delay(3000);
       digitalWrite(L8, LOW);
       break;
     case 10:
       do{
       digitalWrite(L9, HIGH);
-      }while(!(digitalRead(41)));
+      }while(!(digitalRead(S9)));
       delay(3000);
       digitalWrite(L9, LOW);
       break;
@@ -1043,62 +1113,62 @@ void unlockingOpenedDock(){
 switch(dockInt){
     case 1:
       do{
-      digitalWrite(L0, HIGH);
-      }while(digitalRead(23));
-      digitalWrite(L0, LOW);
+      digitalWrite(L9, HIGH);
+      }while(digitalRead(S0));
+      digitalWrite(L9, LOW);
       break;
     case 2:
       do{
       digitalWrite(L1, HIGH);
-      }while(digitalRead(25));
+      }while(digitalRead(S1));
       digitalWrite(L1, LOW);
       break;
     case 3:
       do{
       digitalWrite(L2, HIGH);
-      }while(digitalRead(27));
+      }while(digitalRead(S2));
       digitalWrite(L2, LOW);
       break;
     case 4:
       do{
       digitalWrite(L3, HIGH);
-      }while(digitalRead(29));
+      }while(digitalRead(S3));
       digitalWrite(L3, LOW);
       break;
     case 5:
       do{
       digitalWrite(L4, HIGH);
-      }while(digitalRead(31));
+      }while(digitalRead(S4));
       digitalWrite(L4, LOW);
       break;
     case 6:
       do{
       digitalWrite(L5, HIGH);
-      }while(digitalRead(33));
+      }while(digitalRead(S5));
       digitalWrite(L5, LOW);
       break;
     case 7:
       do{
       digitalWrite(L6, HIGH);
-      }while(digitalRead(35));
+      }while(digitalRead(S6));
       digitalWrite(L6, LOW);
       break;
     case 8:
       do{
       digitalWrite(L7, HIGH);
-      }while(digitalRead(37));
+      }while(digitalRead(S7));
       digitalWrite(L7, LOW);
       break;
     case 9:
       do{
       digitalWrite(L8, HIGH);
-      }while(digitalRead(39));
+      }while(digitalRead(S8));
       digitalWrite(L8, LOW);
       break;
     case 10:
       do{
       digitalWrite(L9, HIGH);
-      }while(digitalRead(41));
+      }while(digitalRead(S9));
       digitalWrite(L9, LOW);
       break;
   }
@@ -1128,6 +1198,7 @@ if (key){
   switch(key){
     
     case '0':
+    buzzer();
     if((counter < 2) && (dockInt == 1)){
       setDock += 0;
       counter++;
@@ -1136,6 +1207,7 @@ if (key){
       break;
     
     case '1':
+    buzzer();
     if((counter < 2) && (dockInt < 1)){
       setDock += 1;
       counter++;
@@ -1143,6 +1215,7 @@ if (key){
       break;
     
     case '2':
+    buzzer();
     if((counter < 2) && (dockInt < 1)){
       setDock += 2;
       counter++;
@@ -1150,6 +1223,7 @@ if (key){
       break;
     
     case '3':
+    buzzer();
     if((counter < 2) && (dockInt < 1)){
       setDock += 3;
       counter++;
@@ -1157,6 +1231,7 @@ if (key){
       break;
     
     case '4':
+    buzzer();
     if((counter < 2) && (dockInt < 1)){
       setDock += 4;
       counter++;
@@ -1164,6 +1239,7 @@ if (key){
       break;
     
     case '5':
+    buzzer();
     if((counter < 2) && (dockInt < 1)){
       setDock += 5;
       counter++;
@@ -1171,6 +1247,7 @@ if (key){
       break;
     
     case '6':
+    buzzer();
     if((counter < 2) && (dockInt < 1)){
       setDock += 6;
       counter++;
@@ -1178,6 +1255,7 @@ if (key){
       break;
     
     case '7':
+    buzzer();
     if((counter < 2) && (dockInt < 1)){
       setDock += 7;
       counter++;
@@ -1185,6 +1263,7 @@ if (key){
       break;
     
     case '8':
+    buzzer();
     if((counter < 2) && (dockInt < 1)){
       setDock += 8;
       counter++;
@@ -1192,6 +1271,7 @@ if (key){
       break;
     
     case '9':
+    buzzer();
     if((counter < 2) && (dockInt < 1)){
       setDock += 9;
       counter++;
@@ -1199,6 +1279,7 @@ if (key){
       break;
     
     case '*':
+    buzzer();
     if((counter <= 2) && (counter > 0)){
       counter = 0;
       mainBack = 0;
@@ -1206,6 +1287,7 @@ if (key){
     }
     
     case '#': //karakter törlés
+    buzzer();
     if(counter > 0){
       delChar();
       counter--;
@@ -1246,6 +1328,7 @@ if (key){
   switch(key){
     
     case '0':
+    buzzer();
     if(counter < 6){
       secPassword += 0;
       setStar += '*';
@@ -1255,6 +1338,7 @@ if (key){
       break;
     
     case '1':
+    buzzer();
     if(counter < 6){
       secPassword += 1;
       setStar += '*';
@@ -1263,6 +1347,7 @@ if (key){
       break;
     
     case '2':
+    buzzer();
     if(counter < 6){
       secPassword += 2;
       setStar += '*';
@@ -1271,6 +1356,7 @@ if (key){
       break;
     
     case '3':
+    buzzer();
     if(counter < 6){
       secPassword += 3;
       setStar += '*';
@@ -1279,6 +1365,7 @@ if (key){
       break;
     
     case '4':
+    buzzer();
     if(counter < 6){
       secPassword += 4;
       setStar += '*';
@@ -1287,6 +1374,7 @@ if (key){
       break;
     
     case '5':
+    buzzer();
     if(counter < 6){
       secPassword += 5;
       setStar += '*';
@@ -1295,6 +1383,7 @@ if (key){
       break;
     
     case '6':
+    buzzer();
     if(counter < 6){
       secPassword += 6;
       setStar += '*';
@@ -1303,6 +1392,7 @@ if (key){
       break;
     
     case '7':
+    buzzer();
     if(counter < 6){
       secPassword += 7;
       setStar += '*';
@@ -1311,6 +1401,7 @@ if (key){
       break;
     
     case '8':
+    buzzer();
     if(counter < 6){
       secPassword += 8;
       setStar += '*';
@@ -1319,6 +1410,7 @@ if (key){
       break;
     
     case '9':
+    buzzer();
     if(counter < 6){
       secPassword += 9;
       setStar += '*';
@@ -1327,6 +1419,7 @@ if (key){
       break;
     
     case '*':
+    buzzer();
     if((counter <= 6) && (counter > 0)){
       if(secPassword == masterPIN) {
         drawScreen(11);
@@ -1339,6 +1432,7 @@ if (key){
       break;
     
     case '#': //karakter törlés
+    buzzer();
     if(counter > 0){
       delChar();
       counter--;
@@ -1429,8 +1523,8 @@ void drawScreen(char drawState){
     u8g.drawStr( 0, 41, " f""\xe1""jl megnyit""\xe1""sakor! ");
     break;
     case 5:
-    u8g.drawStr( 0, 30, "   * Magyar Nyelv *  ");
-    u8g.drawStr( 0, 41, " # English Language #");
+    u8g.drawStr( 0, 30, "   * Admin fel""\xfc""let *  ");
+    u8g.drawStr( 0, 41, " # Dokk v""\xe1""laszt""\xe1""s #");
     break;
     case 6:
     u8g.drawStr( 0, 30,  " \xcd""rd be a feloldani");
@@ -1540,4 +1634,18 @@ void setScreen(){
     u8g.setHiColorByRGB(255,255,255);
   }
   u8g.setFont(u8g_font_courB08); //21 karakter fér ki egy sorba (6-os betűméret)
+}
+
+void buzzer(){
+  digitalWrite(BUZZER, HIGH);
+  delay(200);
+  digitalWrite(BUZZER, LOW);
+/*currentMillis = millis();
+
+if((unsigned long)(currentMillis - previousMillis) >= 1000){
+  previousMillis = currentMillis;
+  digitalWrite(BUZZER, HIGH);
+  }
+  
+  digitalWrite(BUZZER, LOW);*/
 }
