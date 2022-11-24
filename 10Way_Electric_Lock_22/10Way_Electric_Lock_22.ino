@@ -54,9 +54,10 @@
 #define RTC_DAT 12
 #define RTC_RST 13
 
-U8GLIB_KS0108_128 u8g(A0, A1, A2, A3, A4, A5, A6, A7, A13, A8, A9, A12, A11, A10); //U8GLIB(&u8g_dev_ks0108_128x64_fast, d0, d1, d2, d3, d4, d5, d6, d7, en, cs1, cs2, di, rw, reset)
-
-//U8GLIB_ST7920_128X64 u8g(A0, A1, A2, A3, A4, A5, A6, A7, A13, A8, A9, A12, A11, A10); //U8GLIB(&u8g_dev_ks0108_128x64_fast, d0, d1, d2, d3, d4, d5, d6, d7, en, cs1, cs2, di, rw, reset)
+U8GLIB_KS0108_128 u8g(A0, A1, A2, A3, A4, A5, A6, A7, A13, A9, A8, A12, A11, A10); //U8GLIB(&u8g_dev_ks0108_128x64_fast, d0, d1, d2, d3, d4, d5, d6, d7, en, cs1, cs2, di, rw, reset)
+//CS1=1 CS2=0 - left dots
+//CS1=0 CS2=1 - right dots
+//fel van cserélve a lib-ben! (CS1=A9, CS2=A8)
 
 File myFile;
 

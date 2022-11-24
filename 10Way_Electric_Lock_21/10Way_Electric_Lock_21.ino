@@ -118,6 +118,8 @@ void setup(){
   pinMode(A8, OUTPUT);
   pinMode(A9, OUTPUT);
 
+ keypad.setDebounceTime(50);
+
 //SD kártya inicializálás-----------------------------------------------------------
   drawScreen(0);
   delay(1000);
