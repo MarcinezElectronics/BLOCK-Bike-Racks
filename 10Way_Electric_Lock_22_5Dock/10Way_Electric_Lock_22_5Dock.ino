@@ -1,6 +1,6 @@
 /* * * * * * * * * * * * * * * *
  * * * Elektronikus kódzár * * *
-  * * * * * * 10 dokk  * * * * * 
+ * * * * * * * 5 dokk  * * * * *
  * * * * * * * * * * * * * * * *
  * * Készítette: Pál Marcell * *
  * * * * * * * * * * * * * * * *
@@ -39,22 +39,12 @@
 #define L2  29
 #define L3  28
 #define L4  27
-#define L5  26
-#define L6  25
-#define L7  24
-#define L8  23
-#define L9  22
 
 /*#define L0  22
 #define L1  23
 #define L2  24
 #define L3  25
-#define L4  26
-#define L5  27
-#define L6  28
-#define L7  29
-#define L8  30
-#define L9  31*/
+#define L4  26*/
 
 //Input pinouts
 
@@ -63,11 +53,6 @@
 #define S2  39
 #define S3  38
 #define S4  37
-#define S5  36
-#define S6  35
-#define S7  34
-#define S8  33
-#define S9  32
 
 #define BUZZER  A14
 
@@ -134,11 +119,6 @@ String password_2  = "";
 String password_3  = "";
 String password_4  = "";
 String password_5  = "";
-String password_6  = "";
-String password_7  = "";
-String password_8  = "";
-String password_9  = "";
-String password_10 = "";
 
 volatile char key;
 
@@ -174,22 +154,12 @@ void setup(){
   pinMode(S2, INPUT);
   pinMode(S3, INPUT);
   pinMode(S4, INPUT);
-  pinMode(S5, INPUT);
-  pinMode(S6, INPUT);
-  pinMode(S7, INPUT);
-  pinMode(S8, INPUT);
-  pinMode(S9, INPUT);
 
   pinMode(L0, OUTPUT);
   pinMode(L1, OUTPUT);
   pinMode(L2, OUTPUT);
   pinMode(L3, OUTPUT);
   pinMode(L4, OUTPUT);
-  pinMode(L5, OUTPUT);
-  pinMode(L6, OUTPUT);
-  pinMode(L7, OUTPUT);
-  pinMode(L8, OUTPUT);
-  pinMode(L9, OUTPUT);
 
   pinMode(BUZZER, OUTPUT);
 
@@ -229,11 +199,6 @@ void setup(){
   fileWrite("pw3.txt");
   fileWrite("pw4.txt");
   fileWrite("pw5.txt");
-  fileWrite("pw6.txt");
-  fileWrite("pw7.txt");
-  fileWrite("pw8.txt");
-  fileWrite("pw9.txt");
-  fileWrite("pw10.txt");
   fileWrite("uses.txt");
 
 //Jelszavak visszanyerése az SD kártyáról pl. áramszünet után------------------------
@@ -242,11 +207,6 @@ void setup(){
   password_3  = recoveryPassword("pw3.txt");
   password_4  = recoveryPassword("pw4.txt");
   password_5  = recoveryPassword("pw5.txt");
-  password_6  = recoveryPassword("pw6.txt");
-  password_7  = recoveryPassword("pw7.txt");
-  password_8  = recoveryPassword("pw8.txt");
-  password_9  = recoveryPassword("pw9.txt");
-  password_10 = recoveryPassword("pw10.txt");
   
   mainMenu();
 }
@@ -327,7 +287,7 @@ void writeUses(){
   } else {
     drawScreen(3);
     delay(5000);
-  }
+  }  
 }
 
 //Nyomógomb tétlenség ellenőrzés függyényei---------------------------------------
@@ -357,7 +317,6 @@ void mainMenu(){
     key = keypad.getKey();
     switch(key){
       case '*':
-      Serial.println(key);
       buzzer();
         counter  = 0;
         dockInt  = 0;
@@ -366,7 +325,6 @@ void mainMenu(){
         masterDockSelect();
         break;     
       case '#':
-      Serial.println(key);
       buzzer();
             counter  = 0;
             dockInt  = 0;
@@ -398,8 +356,7 @@ watchIdleSwitch();
 if(mainBack > 1){mainMenu();} //két 0 gombnyomásra vissza a főmenübe
 
 if (key){
-  Serial.println(key); 
-  
+
   resetIdleSwitch(); 
   
   switch(key){
@@ -452,38 +409,6 @@ if (key){
     }
       break;
     
-    case '6':
-    buzzer();
-    if((counter < 2) && (dockInt < 1)){
-      setDock += 6;
-      counter++;
-    }
-      break;
-    
-    case '7':
-    buzzer();
-    if((counter < 2) && (dockInt < 1)){
-      setDock += 7;
-      counter++;
-    }
-      break;
-    
-    case '8':
-    buzzer();
-    if((counter < 2) && (dockInt < 1)){
-      setDock += 8;
-      counter++;
-    }
-      break;
-    
-    case '9':
-    buzzer();
-    if((counter < 2) && (dockInt < 1)){
-      setDock += 9;
-      counter++;
-    }
-      break;
-    
     case '*':
     buzzer();
     if((counter <= 2) && (counter > 0)){
@@ -524,16 +449,6 @@ void dockCheck(){
   else if ((digitalRead(S3) == LOW)  && (dockInt == 4)){unlockDock();}
   else if ((digitalRead(S4) == HIGH) && (dockInt == 5)){newPassword();}
   else if ((digitalRead(S4) == LOW)  && (dockInt == 5)){unlockDock();}
-  else if ((digitalRead(S5) == HIGH) && (dockInt == 6)){newPassword();}
-  else if ((digitalRead(S5) == LOW)  && (dockInt == 6)){unlockDock();}
-  else if ((digitalRead(S6) == HIGH) && (dockInt == 7)){newPassword();}
-  else if ((digitalRead(S6) == LOW)  && (dockInt == 7)){unlockDock();}
-  else if ((digitalRead(S7) == HIGH) && (dockInt == 8)){newPassword();}
-  else if ((digitalRead(S7) == LOW)  && (dockInt == 8)){unlockDock();}
-  else if ((digitalRead(S8) == HIGH) && (dockInt == 9)){newPassword();}
-  else if ((digitalRead(S8) == LOW)  && (dockInt == 9)){unlockDock();}
-  else if ((digitalRead(S9) == HIGH) && (dockInt == 10)){newPassword();}
-  else if ((digitalRead(S9) == LOW)  && (dockInt == 10)){unlockDock();}
   else{}   
 }
 
@@ -616,7 +531,7 @@ if (key){
       counter++;
     }
       break;
-    
+
     case '6':
     buzzer();
     if(counter < 4){
@@ -625,7 +540,7 @@ if (key){
       counter++;
     }
       break;
-    
+
     case '7':
     buzzer();
     if(counter < 4){
@@ -634,9 +549,8 @@ if (key){
       counter++;
     }
       break;
-    
+
     case '8':
-    buzzer();
     buzzer();
     if(counter < 4){
       secPassword += 8;
@@ -644,7 +558,7 @@ if (key){
       counter++;
     }
       break;
-    
+
     case '9':
     buzzer();
     if(counter < 4){
@@ -724,26 +638,6 @@ switch(actuallyDock){
       if (passwordToSave == password_5){return true;}
       else{return false;}
         break;      
-      case 6:
-      if (passwordToSave == password_6){return true;}
-      else{return false;}
-        break;    
-      case 7:
-      if (passwordToSave == password_7){return true;}
-      else{return false;}
-        break;       
-      case 8:
-      if (passwordToSave == password_8){return true;}
-      else{return false;}
-        break;      
-      case 9:
-      if (passwordToSave == password_9){return true;}
-      else{return false;}
-        break;     
-      case 10:
-      if (passwordToSave == password_10){return true;}
-      else{return false;}
-       break;
       default:
         break;
     } 
@@ -1075,26 +969,6 @@ switch(dockInt){
       password_5 = secPassword;
       rewritePassword("pw5.txt", password_5);
       break;
-    case 6:
-      password_6 = secPassword;
-      rewritePassword("pw6.txt", password_6);
-      break;
-    case 7:
-      password_7 = secPassword;
-      rewritePassword("pw7.txt", password_7);
-      break;
-    case 8:
-      password_8 = secPassword;
-      rewritePassword("pw8.txt", password_8);
-      break;
-    case 9:
-      password_9 = secPassword;
-      rewritePassword("pw9.txt", password_9);
-      break;
-    case 10:
-      password_10 = secPassword;
-      rewritePassword("pw10.txt", password_10);
-      break;
   }
   
   writeUses();
@@ -1108,10 +982,10 @@ void unlockingClosedDock(){
 switch(dockInt){
     case 1:
       do{
-      digitalWrite(L9, HIGH);
+      digitalWrite(L0, HIGH);
       }while(!(digitalRead(S0)));
       delay(3000);
-      digitalWrite(L9, LOW);
+      digitalWrite(L0, LOW);
       break;
     case 2:
       do{
@@ -1140,41 +1014,6 @@ switch(dockInt){
       }while(!(digitalRead(S4)));
       delay(3000);
       digitalWrite(L4, LOW);
-      break;
-    case 6:
-      do{
-      digitalWrite(L5, HIGH);
-      }while(!(digitalRead(S5)));
-      delay(3000);
-      digitalWrite(L5, LOW);
-      break;
-    case 7:
-      do{
-      digitalWrite(L6, HIGH);
-      }while(!(digitalRead(S6)));
-      delay(3000);
-      digitalWrite(L6, LOW);
-      break;
-    case 8:
-      do{
-      digitalWrite(L7, HIGH);
-      }while(!(digitalRead(S7)));
-      delay(3000);
-      digitalWrite(L7, LOW);
-      break;
-    case 9:
-      do{
-      digitalWrite(L8, HIGH);
-      }while(!(digitalRead(S8)));
-      delay(3000);
-      digitalWrite(L8, LOW);
-      break;
-    case 10:
-      do{
-      digitalWrite(L9, HIGH);
-      }while(!(digitalRead(S9)));
-      delay(3000);
-      digitalWrite(L9, LOW);
       break;
   }
 }
@@ -1212,36 +1051,6 @@ switch(dockInt){
       digitalWrite(L4, HIGH);
       }while(digitalRead(S4));
       digitalWrite(L4, LOW);
-      break;
-    case 6:
-      do{
-      digitalWrite(L5, HIGH);
-      }while(digitalRead(S5));
-      digitalWrite(L5, LOW);
-      break;
-    case 7:
-      do{
-      digitalWrite(L6, HIGH);
-      }while(digitalRead(S6));
-      digitalWrite(L6, LOW);
-      break;
-    case 8:
-      do{
-      digitalWrite(L7, HIGH);
-      }while(digitalRead(S7));
-      digitalWrite(L7, LOW);
-      break;
-    case 9:
-      do{
-      digitalWrite(L8, HIGH);
-      }while(digitalRead(S8));
-      digitalWrite(L8, LOW);
-      break;
-    case 10:
-      do{
-      digitalWrite(L9, HIGH);
-      }while(digitalRead(S9));
-      digitalWrite(L9, LOW);
       break;
   }
 }
@@ -1317,7 +1126,7 @@ if (key){
       counter++;
     }
       break;
-    
+
     case '6':
     buzzer();
     if((counter < 2) && (dockInt < 1)){
@@ -1325,7 +1134,7 @@ if (key){
       counter++;
     }
       break;
-    
+
     case '7':
     buzzer();
     if((counter < 2) && (dockInt < 1)){
@@ -1333,7 +1142,7 @@ if (key){
       counter++;
     }
       break;
-    
+
     case '8':
     buzzer();
     if((counter < 2) && (dockInt < 1)){
@@ -1341,11 +1150,11 @@ if (key){
       counter++;
     }
       break;
-    
+
     case '9':
     buzzer();
     if((counter < 2) && (dockInt < 1)){
-      setDock += 9;
+      setDock += 8;
       counter++;
     }
       break;
@@ -1546,26 +1355,6 @@ switch(dockInt){
       password_5 = "";
       rewritePassword("pw5.txt", password_5);
       break;
-    case 6:
-      password_6 = "";
-      rewritePassword("pw6.txt", password_6);
-      break;
-    case 7:
-      password_7 = "";
-      rewritePassword("pw7.txt", password_7);
-      break;
-    case 8:
-      password_8 = "";
-      rewritePassword("pw8.txt", password_8);
-      break;
-    case 9:
-      password_9 = "";
-      rewritePassword("pw9.txt", password_9);
-      break;
-    case 10:
-      password_10 = "";
-      rewritePassword("pw10.txt", password_10);
-      break;
   }
   mainMenu();
 }
@@ -1729,7 +1518,7 @@ void getRTCtime(){
 void setRTCtime(){
   sec3   = 0;
   min3   = 14;
-  hour3  = 12;
+  hour3  = 10;
   day3   = 24;
   month3 = 11;
   year3  = 2022;
