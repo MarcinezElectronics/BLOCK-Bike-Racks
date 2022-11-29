@@ -10,6 +10,7 @@
  * * *  V4 * 2021.09.14. * * * *
  * * *  V5 * 2022.09.03. * * * *
  * * *  V6 * 2022.11.24. * * * *
+ * * *  V7 * 2022.11.29. * * * *
  * * * * * * * * * * * * * * * */
 
 #include <Wire.h>
@@ -91,6 +92,7 @@ void mainMenu();
 void dockSelect();
 void dockCheck();
 void unlockDock();
+void writeUses(unsigned char dockNo, unsigned long ellapsedTime);
 boolean scanPassword(unsigned int actuallyDock, String passwordToSave);
 void newPassword();
 void againPassword();
@@ -106,6 +108,7 @@ void showStar();
 void showDock();
 void setScreen();
 void buzzer();
+time_t tmConvert_t(int YYYY, byte MM, byte DD, byte hh, byte mm, byte ss);
 void getRTCtime();
 void setRTCtime();
 
@@ -146,13 +149,25 @@ boolean i = false;
 
 volatile unsigned char mainBack = 0;
 
-volatile unsigned int  counter  = 0; 
-volatile unsigned int  dockInt  = 0;
+volatile unsigned char counter  = 0; 
+volatile unsigned char dockInt  = 0;
 
 volatile unsigned long currentMillis  = 0;
 volatile unsigned long previousMillis = 0;
 
-volatile unsigned long usesNo = 0;
+//volatile unsigned long usesNo = 0;
+
+volatile unsigned long unixTime   = 0;
+volatile unsigned long unixTime1  = 0;
+volatile unsigned long unixTime2  = 0;
+volatile unsigned long unixTime3  = 0;
+volatile unsigned long unixTime4  = 0;
+volatile unsigned long unixTime5  = 0;
+volatile unsigned long unixTime6  = 0;
+volatile unsigned long unixTime7  = 0;
+volatile unsigned long unixTime8  = 0;
+volatile unsigned long unixTime9  = 0;
+volatile unsigned long unixTime10 = 0;
 
 //RTC variables
 volatile int    year3    = 0;
@@ -234,7 +249,7 @@ void setup(){
   fileWrite("pw8.txt");
   fileWrite("pw9.txt");
   fileWrite("pw10.txt");
-  fileWrite("uses.txt");
+  fileWrite("uses.csv");
 
 //Jelszavak visszanyerése az SD kártyáról pl. áramszünet után------------------------
   password_1  = recoveryPassword("pw1.txt");
@@ -300,14 +315,14 @@ void rewritePassword(String rwpw, String newpw){
 }
 
 //Használatok számának rögzítése az SD kártyára-----------------------------------
-void writeUses(){
+void writeUses(unsigned char dockNo, unsigned long ellapsedTime){
 
-  usesNo += 1;
+  //usesNo += 1;
   
-  myFile = SD.open("uses.txt", FILE_WRITE);
+  myFile = SD.open("uses.csv", FILE_WRITE);
 
   if (myFile) {
-    myFile.print(year3);
+    /*myFile.print(year3);
     myFile.print(".");
     myFile.print(month3);
     myFile.print(".");
@@ -322,6 +337,10 @@ void writeUses(){
     myFile.print(" ");
     myFile.print(usesNo);
     myFile.print(".");
+    myFile.println();*/
+    myFile.print(dockInt);
+    myFile.print(";");
+    myFile.print(ellapsedTime);
     myFile.println();
     myFile.close();
   } else {
@@ -514,26 +533,105 @@ if (key){
 //Induktív érzékelők kezelése---------------------------------------------------------
 void dockCheck(){
   
-  if      ((digitalRead(S0) == HIGH) && (dockInt == 1)){newPassword();}
-  else if ((digitalRead(S0) == LOW)  && (dockInt == 1)){unlockDock();}
-  else if ((digitalRead(S1) == HIGH) && (dockInt == 2)){newPassword();}
-  else if ((digitalRead(S1) == LOW)  && (dockInt == 2)){unlockDock();}
-  else if ((digitalRead(S2) == HIGH) && (dockInt == 3)){newPassword();}
-  else if ((digitalRead(S2) == LOW)  && (dockInt == 3)){unlockDock();}
-  else if ((digitalRead(S3) == HIGH) && (dockInt == 4)){newPassword();}
-  else if ((digitalRead(S3) == LOW)  && (dockInt == 4)){unlockDock();}
-  else if ((digitalRead(S4) == HIGH) && (dockInt == 5)){newPassword();}
-  else if ((digitalRead(S4) == LOW)  && (dockInt == 5)){unlockDock();}
-  else if ((digitalRead(S5) == HIGH) && (dockInt == 6)){newPassword();}
-  else if ((digitalRead(S5) == LOW)  && (dockInt == 6)){unlockDock();}
-  else if ((digitalRead(S6) == HIGH) && (dockInt == 7)){newPassword();}
-  else if ((digitalRead(S6) == LOW)  && (dockInt == 7)){unlockDock();}
-  else if ((digitalRead(S7) == HIGH) && (dockInt == 8)){newPassword();}
-  else if ((digitalRead(S7) == LOW)  && (dockInt == 8)){unlockDock();}
-  else if ((digitalRead(S8) == HIGH) && (dockInt == 9)){newPassword();}
-  else if ((digitalRead(S8) == LOW)  && (dockInt == 9)){unlockDock();}
-  else if ((digitalRead(S9) == HIGH) && (dockInt == 10)){newPassword();}
-  else if ((digitalRead(S9) == LOW)  && (dockInt == 10)){unlockDock();}
+  if      ((digitalRead(S0) == HIGH) && (dockInt == 1)){
+    getRTCtime();
+    unixTime1 = unixTime;
+    newPassword();
+    }
+  else if ((digitalRead(S0) == LOW)  && (dockInt == 1)){
+    getRTCtime();
+    unixTime = unixTime - unixTime1;
+    unlockDock();
+    }
+  else if ((digitalRead(S1) == HIGH) && (dockInt == 2)){
+    getRTCtime();
+    unixTime2 = unixTime;
+    newPassword();
+    }
+  else if ((digitalRead(S1) == LOW)  && (dockInt == 2)){
+    getRTCtime();
+    unixTime = unixTime - unixTime2;
+    unlockDock();
+    }
+  else if ((digitalRead(S2) == HIGH) && (dockInt == 3)){
+    getRTCtime();
+    unixTime3 = unixTime;
+    newPassword();
+    }
+  else if ((digitalRead(S2) == LOW)  && (dockInt == 3)){
+    getRTCtime();
+    unixTime = unixTime - unixTime3;
+    unlockDock();
+    }
+  else if ((digitalRead(S3) == HIGH) && (dockInt == 4)){
+    getRTCtime();
+    unixTime4 = unixTime;
+    newPassword();
+    }
+  else if ((digitalRead(S3) == LOW)  && (dockInt == 4)){
+    getRTCtime();
+    unixTime = unixTime - unixTime4;
+    unlockDock();
+    }
+  else if ((digitalRead(S4) == HIGH) && (dockInt == 5)){
+    getRTCtime();
+    unixTime5 = unixTime;
+    newPassword();
+    }
+  else if ((digitalRead(S4) == LOW)  && (dockInt == 5)){
+    getRTCtime();
+    unixTime = unixTime - unixTime5;
+    unlockDock();
+    }
+  else if ((digitalRead(S5) == HIGH) && (dockInt == 6)){
+    getRTCtime();
+    unixTime6 = unixTime;
+    newPassword();}
+  else if ((digitalRead(S5) == LOW)  && (dockInt == 6)){
+    getRTCtime();
+    unixTime = unixTime - unixTime6;
+    unlockDock();
+    }
+  else if ((digitalRead(S6) == HIGH) && (dockInt == 7)){
+    getRTCtime();
+    unixTime7 = unixTime;
+    newPassword();
+    }
+  else if ((digitalRead(S6) == LOW)  && (dockInt == 7)){
+    getRTCtime();
+    unixTime = unixTime - unixTime7;
+    unlockDock();
+    }
+  else if ((digitalRead(S7) == HIGH) && (dockInt == 8)){
+    getRTCtime();
+    unixTime8 = unixTime;
+    newPassword();
+    }
+  else if ((digitalRead(S7) == LOW)  && (dockInt == 8)){
+    getRTCtime();
+    unixTime = unixTime - unixTime8;
+    unlockDock();
+    }
+  else if ((digitalRead(S8) == HIGH) && (dockInt == 9)){
+    getRTCtime();
+    unixTime9 = unixTime;
+    newPassword();
+    }
+  else if ((digitalRead(S8) == LOW)  && (dockInt == 9)){
+    getRTCtime();
+    unixTime = unixTime - unixTime9;
+    unlockDock();
+    }
+  else if ((digitalRead(S9) == HIGH) && (dockInt == 10)){
+    getRTCtime();
+    unixTime10 = unixTime;
+    newPassword();
+    }
+  else if ((digitalRead(S9) == LOW)  && (dockInt == 10)){
+    getRTCtime();
+    unixTime = unixTime - unixTime10;
+    unlockDock();
+    }
   else{}   
 }
 
@@ -697,6 +795,7 @@ if (key){
   showStar();
  }
 }
+  writeUses(dockInt, unixTime); //Parkolási idő mentése csv fájlba az adott dokkhoz.
   mainMenu();
 }
 
@@ -1097,7 +1196,7 @@ switch(dockInt){
       break;
   }
   
-  writeUses();
+  //writeUses();
   
   mainMenu();
 }
@@ -1714,6 +1813,17 @@ void buzzer(){
   digitalWrite(BUZZER, LOW);
 }
 
+time_t tmConvert_t(int YYYY, byte MM, byte DD, byte hh, byte mm, byte ss) { 
+  tmElements_t tm;
+  tm.Year = YYYY - 1970;
+  tm.Month = MM;
+  tm.Day = DD;
+  tm.Hour = hh;
+  tm.Minute = mm;
+  tm.Second = ss;
+  return makeTime(tm); 
+}
+
 void getRTCtime(){
 
   myRTC.updateTime(); //Ha rossz az idő, akkor lehet, hogy hibás a kvarc vagy alacsony az elem feszültség
@@ -1724,6 +1834,8 @@ void getRTCtime(){
   hour3   = myRTC.hours;
   min3    = myRTC.minutes;
   sec3    = myRTC.seconds;
+
+  unixTime = tmConvert_t(year3, (byte)month3, (byte)day3, (byte)hour3, (byte)min3, (byte)sec3);
 }
 
 void setRTCtime(){
