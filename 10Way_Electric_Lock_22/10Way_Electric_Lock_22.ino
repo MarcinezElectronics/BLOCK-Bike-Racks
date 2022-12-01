@@ -46,6 +46,9 @@
 #define L8  23
 #define L9  22
 
+#define OK  '#'
+#define DEL '*'
+
 /*#define L0  22
 #define L1  23
 #define L2  24
@@ -317,27 +320,9 @@ void rewritePassword(String rwpw, String newpw){
 //Használatok számának rögzítése az SD kártyára-----------------------------------
 void writeUses(unsigned char dockNo, unsigned long ellapsedTime){
 
-  //usesNo += 1;
-  
   myFile = SD.open("uses.csv", FILE_WRITE);
 
   if (myFile) {
-    /*myFile.print(year3);
-    myFile.print(".");
-    myFile.print(month3);
-    myFile.print(".");
-    myFile.print(day3);
-    myFile.print(".");
-    myFile.print(" ");
-    myFile.print(hour3);
-    myFile.print(":");
-    myFile.print(min3);
-    myFile.print(":");
-    myFile.print(sec3);
-    myFile.print(" ");
-    myFile.print(usesNo);
-    myFile.print(".");
-    myFile.println();*/
     myFile.print(dockInt);
     myFile.print(";");
     myFile.print(ellapsedTime);
@@ -370,35 +355,8 @@ void mainMenu(){
   
   mainBack = 0;
 
-  drawScreen(5);
-  
-  while(i == false){
-    key = keypad.getKey();
-    switch(key){
-      case '*':
-      Serial.println(key);
-      buzzer();
-        counter  = 0;
-        dockInt  = 0;
-        setDock  = "";
-        secPassword = "";
-        masterDockSelect();
-        break;     
-      case '#':
-      Serial.println(key);
-      buzzer();
-            counter  = 0;
-            dockInt  = 0;
-            setDock  = ""; 
-            setPassword = "";
-            secPassword = "";
-            dockSelect();
-        break;
-      default:
-            i = false;
-        break;
-    } 
-  } 
+  dockSelect();
+ 
 }
 
 //Dokk kiválasztása--------------------------------------------------------------------
@@ -503,7 +461,7 @@ if (key){
     }
       break;
     
-    case '*':
+    case OK:
     buzzer();
     if((counter <= 2) && (counter > 0)){
       counter = 0;
@@ -511,7 +469,7 @@ if (key){
       i = false; 
     }
     
-    case '#': //karakter törlés
+    case DEL: //karakter törlés
     buzzer();
     if(counter > 0){
       delChar();
@@ -573,12 +531,12 @@ void dockCheck(){
     unixTime = unixTime - unixTime4;
     unlockDock();
     }
-  else if ((digitalRead(S4) == HIGH) && (dockInt == 5)){
+  else if ((digitalRead(S4) == LOW) && (dockInt == 5)){ //PNP sensor!
     getRTCtime();
     unixTime5 = unixTime;
     newPassword();
     }
-  else if ((digitalRead(S4) == LOW)  && (dockInt == 5)){
+  else if ((digitalRead(S4) == HIGH)  && (dockInt == 5)){ //PNP sensor!
     getRTCtime();
     unixTime = unixTime - unixTime5;
     unlockDock();
@@ -752,7 +710,7 @@ if (key){
     }
       break;
     
-    case '*':
+    case OK:
     buzzer();
     if((counter <= 4) && (counter > 0)){
 
@@ -779,7 +737,7 @@ if (key){
     }
       break;
     
-    case '#': //karakter törlés
+    case DEL: //karakter törlés
     buzzer();
     if(counter > 0){
       delChar();     
@@ -962,7 +920,7 @@ if (key){
     }
       break;
     
-    case '*': //jelszó mentés
+    case OK: //jelszó mentés
     buzzer();
     if((counter <= 4) && (counter > 0)){
       counter = 0;
@@ -971,7 +929,7 @@ if (key){
     }
       break;
     
-    case '#': //karakter törlés
+    case DEL: //karakter törlés
     buzzer();
     if(counter > 0){
       delChar();
@@ -1104,7 +1062,7 @@ if (key){
     }
       break;
     
-    case '*': //jelszó mentés
+    case OK: //jelszó mentés
     buzzer();
     if((counter <= 4) && (counter > 0)){
       if(secPassword == setPassword) {
@@ -1131,7 +1089,7 @@ if (key){
     }
       break;
     
-    case '#': //karakter törlés
+    case DEL: //karakter törlés
     buzzer();
     if(counter > 0){
       delChar();
@@ -1449,7 +1407,7 @@ if (key){
     }
       break;
     
-    case '*':
+    case OK:
     buzzer();
     if((counter <= 2) && (counter > 0)){
       counter = 0;
@@ -1457,7 +1415,7 @@ if (key){
       i = false; 
     }
     
-    case '#': //karakter törlés
+    case DEL: //karakter törlés
     buzzer();
     if(counter > 0){
       delChar();
@@ -1589,7 +1547,7 @@ if (key){
     }
       break;
     
-    case '*':
+    case OK:
     buzzer();
     if((counter <= 6) && (counter > 0)){
       if(secPassword == masterPIN) {
@@ -1602,7 +1560,7 @@ if (key){
     }
       break;
     
-    case '#': //karakter törlés
+    case DEL: //karakter törlés
     buzzer();
     if(counter > 0){
       delChar();
@@ -1698,8 +1656,9 @@ void drawScreen(char drawState){
     u8g.drawStr( 0, 41, " # Dokk v""\xe1""laszt""\xe1""s #");
     break;
     case 6:
-    u8g.drawStr( 0, 30,  " \xcd""rd be a feloldani");
-    u8g.drawStr( 0, 41, " k""\xed""v""\xe1""nt"" dokk sz""\xe1""m""\xe1""t""!");
+    u8g.drawStr( 0, 26, " \xcd""rd be a feloldani");
+    u8g.drawStr( 0, 36, " k""\xed""v""\xe1""nt"" dokk sz""\xe1""m""\xe1""t""!");
+    u8g.drawStr( 0, 47, " # OK     * T""\x94""rl""\xe9""s");
     break;
     case 7:
     u8g.drawStr( 0, 25, "   K""\xe9""rlek add meg a   ");
