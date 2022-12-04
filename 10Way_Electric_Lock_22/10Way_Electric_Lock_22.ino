@@ -1165,10 +1165,10 @@ void unlockingClosedDock(){
 switch(dockInt){
     case 1:
       do{
-      digitalWrite(L9, HIGH);
+      digitalWrite(L0, HIGH);
       }while(!(digitalRead(S0)));
       delay(3000);
-      digitalWrite(L9, LOW);
+      digitalWrite(L0, LOW);
       break;
     case 2:
       do{

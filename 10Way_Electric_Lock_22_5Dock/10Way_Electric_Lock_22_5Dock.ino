@@ -61,6 +61,9 @@
 #define RTC_DAT 12
 #define RTC_RST 13
 
+#define OK  '#'
+#define DEL '*'
+
 U8GLIB_KS0108_128 u8g(A0, A1, A2, A3, A4, A5, A6, A7, A13, A9, A8, A12, A11, A10); //U8GLIB(&u8g_dev_ks0108_128x64_fast, d0, d1, d2, d3, d4, d5, d6, d7, en, cs1, cs2, di, rw, reset)
 //CS1=1 CS2=0 - left dots
 //CS1=0 CS2=1 - right dots
@@ -325,33 +328,8 @@ void mainMenu(){
   
   mainBack = 0;
 
-  drawScreen(5);
+  dockSelect(); 
   
-  while(i == false){
-    key = keypad.getKey();
-    switch(key){
-      case '*':
-      buzzer();
-        counter  = 0;
-        dockInt  = 0;
-        setDock  = "";
-        secPassword = "";
-        masterDockSelect();
-        break;     
-      case '#':
-      buzzer();
-            counter  = 0;
-            dockInt  = 0;
-            setDock  = ""; 
-            setPassword = "";
-            secPassword = "";
-            dockSelect();
-        break;
-      default:
-            i = false;
-        break;
-    } 
-  } 
 }
 
 //Dokk kiválasztása--------------------------------------------------------------------
@@ -423,7 +401,7 @@ if (key){
     }
       break;
     
-    case '*':
+    case OK:
     buzzer();
     if((counter <= 2) && (counter > 0)){
       counter = 0;
@@ -431,7 +409,7 @@ if (key){
       i = false; 
     }
     
-    case '#': //karakter törlés
+    case DEL: //karakter törlés
     buzzer();
     if(counter > 0){
       delChar();
@@ -622,7 +600,7 @@ if (key){
     }
       break;
     
-    case '*':
+    case OK:
     buzzer();
     if((counter <= 4) && (counter > 0)){
 
@@ -649,7 +627,7 @@ if (key){
     }
       break;
     
-    case '#': //karakter törlés
+    case DEL: //karakter törlés
     buzzer();
     if(counter > 0){
       delChar();     
@@ -812,7 +790,7 @@ if (key){
     }
       break;
     
-    case '*': //jelszó mentés
+    case OK: //jelszó mentés
     buzzer();
     if((counter <= 4) && (counter > 0)){
       counter = 0;
@@ -821,7 +799,7 @@ if (key){
     }
       break;
     
-    case '#': //karakter törlés
+    case DEL: //karakter törlés
     buzzer();
     if(counter > 0){
       delChar();
@@ -954,7 +932,7 @@ if (key){
     }
       break;
     
-    case '*': //jelszó mentés
+    case OK: //jelszó mentés
     buzzer();
     if((counter <= 4) && (counter > 0)){
       if(secPassword == setPassword) {
@@ -981,7 +959,7 @@ if (key){
     }
       break;
     
-    case '#': //karakter törlés
+    case DEL: //karakter törlés
     buzzer();
     if(counter > 0){
       delChar();
@@ -1214,7 +1192,7 @@ if (key){
     }
       break;
     
-    case '*':
+    case OK:
     buzzer();
     if((counter <= 2) && (counter > 0)){
       counter = 0;
@@ -1222,7 +1200,7 @@ if (key){
       i = false; 
     }
     
-    case '#': //karakter törlés
+    case DEL: //karakter törlés
     buzzer();
     if(counter > 0){
       delChar();
@@ -1354,7 +1332,7 @@ if (key){
     }
       break;
     
-    case '*':
+    case OK:
     buzzer();
     if((counter <= 6) && (counter > 0)){
       if(secPassword == masterPIN) {
@@ -1367,7 +1345,7 @@ if (key){
     }
       break;
     
-    case '#': //karakter törlés
+    case DEL: //karakter törlés
     buzzer();
     if(counter > 0){
       delChar();
