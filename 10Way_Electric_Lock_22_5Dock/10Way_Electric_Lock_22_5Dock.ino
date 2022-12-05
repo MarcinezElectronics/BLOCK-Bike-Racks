@@ -132,6 +132,8 @@ boolean i = false;
 
 volatile unsigned char mainBack = 0;
 
+volatile unsigned char adminBack = 0;
+
 volatile unsigned char counter  = 0; 
 volatile unsigned char dockInt  = 0;
 
@@ -328,6 +330,8 @@ void mainMenu(){
   
   mainBack = 0;
 
+  adminBack = 0;
+
   dockSelect();
 }
 
@@ -345,6 +349,8 @@ key = keypad.getKey();
 watchIdleSwitch();
 
 if(mainBack > 1){mainMenu();} //két 0 gombnyomásra vissza a főmenübe
+
+if(adminBack > 1){masterDockSelect();}  //két 1-es gombnyomásra vissza az admin felületre
 
 if (key){
 
@@ -366,6 +372,7 @@ if (key){
       setDock += 1;
       counter++;
     }
+    else {adminBack++;}
       break;
     
     case '2':
@@ -405,6 +412,7 @@ if (key){
     if((counter <= 2) && (counter > 0)){
       counter = 0;
       mainBack = 0;
+      adminBack = 0;
       i = false; 
     }
     
@@ -500,6 +508,8 @@ watchIdleSwitch();
 
 if(mainBack > 1){mainMenu();} //két 0 gombnyomásra vissza a főmenübe
 
+if(adminBack > 1){masterDockSelect();}  //két 1-es gombnyomásra vissza az admin felületre
+
 if (key){ 
 
   resetIdleSwitch();
@@ -525,6 +535,7 @@ if (key){
       setStar += '*';
       counter++;
     }
+    else {adminBack++;}
       break;
     
     case '2':
@@ -609,6 +620,7 @@ if (key){
         unlockingClosedDock(); 
         counter = 0;
         mainBack = 0;
+        adminBack = 0;
         i = false; 
       }
 
@@ -617,6 +629,7 @@ if (key){
         delay(5000);
         counter = 0;
         mainBack = 0;
+        adminBack = 0;
         i = true;
         secPassword = "";
         unlockDock();  
@@ -692,6 +705,8 @@ watchIdleSwitch();
 
 if(mainBack > 1){mainMenu();} //két 0 gombnyomásra vissza a főmenübe
 
+if(adminBack > 1){masterDockSelect();}  //két 1-es gombnyomásra vissza az admin felületre
+
 if (key){
 
   resetIdleSwitch();
@@ -715,6 +730,7 @@ if (key){
       setStar += '*';
       counter++;
     }
+    else {adminBack++;}
       break;
     
     case '2':
@@ -794,6 +810,7 @@ if (key){
     if((counter <= 4) && (counter > 0)){
       counter = 0;
       mainBack = 0;
+      adminBack = 0;
       i = false; 
     }
       break;
@@ -834,6 +851,8 @@ watchIdleSwitch();
 
 if(mainBack > 1){mainMenu();} //két 0 gombnyomásra vissza a főmenübe
 
+if(adminBack > 1){masterDockSelect();}  //két 1-es gombnyomásra vissza az admin felületre
+
 if (key){ 
 
   resetIdleSwitch();
@@ -857,6 +876,7 @@ if (key){
       setStar += '*';
       counter++;
     }
+    else {adminBack++;}
       break;
     
     case '2':
@@ -942,6 +962,7 @@ if (key){
                
         counter = 0;
         mainBack = 0;
+        adminBack = 0;
         i = false;
         }
       else if(secPassword != setPassword){
@@ -951,6 +972,7 @@ if (key){
         
         counter = 0;
         mainBack = 0;
+        adminBack = 0;
         i = true;
         secPassword = "";
         againPassword();
