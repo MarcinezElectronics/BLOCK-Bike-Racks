@@ -1420,8 +1420,9 @@ void drawScreen(char drawState){
     u8g.drawStr( 0, 41, " # Dokk v""\xe1""laszt""\xe1""s #");
     break;
     case 6:
-    u8g.drawStr( 0, 30,  " \xcd""rd be a feloldani");
-    u8g.drawStr( 0, 41, " k""\xed""v""\xe1""nt"" dokk sz""\xe1""m""\xe1""t""!");
+    u8g.drawStr( 0, 26, " \xcd""rd be a feloldani");
+    u8g.drawStr( 0, 36, " k""\xed""v""\xe1""nt"" dokk sz""\xe1""m""\xe1""t""!");
+    u8g.drawStr( 0, 47, " # OK     * T""\x94""rl""\xe9""s");
     break;
     case 7:
     u8g.drawStr( 0, 25, "   K""\xe9""rlek add meg a   ");
