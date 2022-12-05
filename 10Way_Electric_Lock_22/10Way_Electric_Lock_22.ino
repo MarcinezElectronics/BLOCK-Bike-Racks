@@ -269,8 +269,7 @@ void setup(){
   mainMenu();
 }
   
-void loop(){ 
-  
+void loop(){   
 }
 
 //SD kártya írás, olvasás, felülírás függvényei--------------------------------------
@@ -356,7 +355,6 @@ void mainMenu(){
   mainBack = 0;
 
   dockSelect();
- 
 }
 
 //Dokk kiválasztása--------------------------------------------------------------------
@@ -531,12 +529,12 @@ void dockCheck(){
     unixTime = unixTime - unixTime4;
     unlockDock();
     }
-  else if ((digitalRead(S4) == LOW) && (dockInt == 5)){ //PNP sensor!
+  else if ((digitalRead(S4) == LOW) && (dockInt == 5)){ //PNP sensor! NPN:HIGH
     getRTCtime();
     unixTime5 = unixTime;
     newPassword();
     }
-  else if ((digitalRead(S4) == HIGH)  && (dockInt == 5)){ //PNP sensor!
+  else if ((digitalRead(S4) == HIGH)  && (dockInt == 5)){ //PNP sensor! NPN:LOW
     getRTCtime();
     unixTime = unixTime - unixTime5;
     unlockDock();
@@ -1068,7 +1066,7 @@ if (key){
       if(secPassword == setPassword) {
         
         drawScreen(12);
-        delay(5000);      //5 másodperc késleltetés a nyitás előtt
+        delay(5000);            //5 másodperc késleltetés a nyitás előtt
         unlockingOpenedDock();  //Nyitás, ha a megadott jelszavak egyeznek (magyar mód)
                
         counter = 0;

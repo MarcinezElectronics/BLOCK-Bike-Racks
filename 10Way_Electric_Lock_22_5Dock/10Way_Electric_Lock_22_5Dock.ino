@@ -328,8 +328,7 @@ void mainMenu(){
   
   mainBack = 0;
 
-  dockSelect(); 
-  
+  dockSelect();
 }
 
 //Dokk kiválasztása--------------------------------------------------------------------
