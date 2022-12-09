@@ -96,6 +96,7 @@ void fileWrite(String pwFile);
 String recoveryPassword(String pw);
 void rewritePassword(String rwpw, String newpw);
 void watchIdleSwitch();
+void watchIdleSensor();
 void resetIdleSwitch();
 void mainMenu();
 void dockSelect();
@@ -190,6 +191,8 @@ volatile int    hour3    = 0;
 volatile int    min3     = 0;
 volatile int    sec3     = 0;
 String usingDate = "";
+
+boolean goodSensor = true;
 
 virtuabotixRTC myRTC(RTC_CLK, RTC_DAT, RTC_RST);
 
@@ -359,6 +362,16 @@ if((unsigned long)(currentMillis - previousMillis) >= INTERVAL){
   }
 }
 
+void watchIdleSensor(){
+
+currentMillis = millis();
+
+if((unsigned long)(currentMillis - previousMillis) >= 20000){ //20sec
+  previousMillis = currentMillis;
+  goodSensor = false; //false esetén rossz a szenzor, így lép ki a while ciklusból
+  }
+}
+
 void resetIdleSwitch(){
   previousMillis = currentMillis;  
 }
@@ -373,6 +386,7 @@ void mainMenu(){
   setDock     = "";
   secPassword = "";
   setPassword = "";
+  goodSensor = true;  //feltételezve, hogy jó a szenzor (while ciklus miatt)
   
   dockSelect();
 }
@@ -1230,75 +1244,90 @@ switch(dockInt){
 //Dokk feloldása------------------------------------------------------
 void unlockingClosedDock(){
 
+previousMillis = currentMillis; //watchIdleSensor függvénynek
+
 switch(dockInt){
     case 1:
-      do{
       digitalWrite(L0, HIGH);
-      }while(!(digitalRead(S0)));
+      while((!(digitalRead(S0))) && goodSensor){
+      watchIdleSensor();
+      /*Serial.println(previousMillis);
+      Serial.println(currentMillis);
+      Serial.println(goodSensor);*/
+      }
       delay(3000);
       digitalWrite(L0, LOW);
       break;
     case 2:
-      do{
       digitalWrite(L1, HIGH);
-      }while(!(digitalRead(S1)));
+      while((!(digitalRead(S1))) && goodSensor){
+        watchIdleSensor(); 
+      }
       delay(3000);
       digitalWrite(L1, LOW);
       break;
     case 3:
-      do{
       digitalWrite(L2, HIGH);
-      }while(!(digitalRead(S2)));
+      while((!(digitalRead(S2))) && goodSensor){
+        watchIdleSensor(); 
+      }
       delay(3000);
       digitalWrite(L2, LOW);
       break;
     case 4:
-      do{
       digitalWrite(L3, HIGH);
-      }while(!(digitalRead(S3)));
+      while((!(digitalRead(S3))) && goodSensor){
+        watchIdleSensor(); 
+      }
       delay(3000);
       digitalWrite(L3, LOW);
       break;
     case 5:
-      do{
       digitalWrite(L4, HIGH);
-      }while(!(digitalRead(S4)));
+      while((!(digitalRead(S4))) && goodSensor){
+        watchIdleSensor(); 
+      }
       delay(3000);
       digitalWrite(L4, LOW);
       break;
 #ifdef TENWAY
     case 6:
-      do{
       digitalWrite(L5, HIGH);
-      }while(!(digitalRead(S5)));
+      while((!(digitalRead(S5))) && goodSensor){
+        watchIdleSensor(); 
+      }
       delay(3000);
       digitalWrite(L5, LOW);
       break;
     case 7:
-      do{
       digitalWrite(L6, HIGH);
-      }while(!(digitalRead(S6)));
+      while((!(digitalRead(S6))) && goodSensor){
+        watchIdleSensor(); 
+      }
       delay(3000);
       digitalWrite(L6, LOW);
       break;
     case 8:
-      do{
       digitalWrite(L7, HIGH);
-      }while(!(digitalRead(S7)));
+      while((!(digitalRead(S7))) && goodSensor){
+        watchIdleSensor(); 
+      }
       delay(3000);
       digitalWrite(L7, LOW);
       break;
     case 9:
-      do{
       digitalWrite(L8, HIGH);
-      }while(!(digitalRead(S8)));
+      while((!(digitalRead(S8))) && goodSensor){
+        watchIdleSensor(); 
+      }
       delay(3000);
       digitalWrite(L8, LOW);
       break;
     case 10:
-      do{
       digitalWrite(L9, HIGH);
-      }while(!(digitalRead(S9)));
+      while((!(digitalRead(S9))) && goodSensor){
+        watchIdleSensor(); 
+      }
       delay(3000);
       digitalWrite(L9, LOW);
       break;
