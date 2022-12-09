@@ -39,6 +39,15 @@
 #define C2  3 
 #define C3  7
 
+/*//Keypad pinouts (Saját!)
+#define R1  6
+#define R2  5
+#define R3  4
+#define R4  3  
+#define C1  9
+#define C2  8 
+#define C3  7*/
+
 //Output pinouts
 #define L0  31
 #define L1  30
@@ -236,9 +245,8 @@ void setup(){
   drawScreen(0);
   delay(1000);
 
-  if (!SD.begin(53)) {
+  while (!SD.begin(53)) {
     drawScreen(2);
-    while (1);
   }
   
   drawScreen(1);
@@ -358,10 +366,14 @@ void resetIdleSwitch(){
 //Főmenü---------------------------------------------------------------------------
 void mainMenu(){
   
-  mainBack = 0;
-
-  adminBack = 0;
-
+  mainBack    = 0;
+  adminBack   = 0;
+  counter     = 0;
+  dockInt     = 0;
+  setDock     = "";
+  secPassword = "";
+  setPassword = "";
+  
   dockSelect();
 }
 
@@ -378,10 +390,6 @@ key = keypad.getKey();
 
 watchIdleSwitch();
 
-if(mainBack > 1){mainMenu();}           //két 0 gombnyomásra vissza a főmenübe
-
-if(adminBack > 1){masterDockSelect();}  //két 1-es gombnyomásra vissza az admin felületre
-
 if (key){
   Serial.println(key); 
   
@@ -394,7 +402,10 @@ if (key){
       setDock += 0;
       counter++;
     }
-    else {mainBack++;}
+    else {
+      mainBack++;
+      if(mainBack > 1){mainMenu();}           //két 0 gombnyomásra vissza a főmenübe
+      }
       break;
     
     case '1':
@@ -403,7 +414,10 @@ if (key){
       setDock += 1;
       counter++;
     }
-    else {adminBack++;}
+    else {
+      adminBack++;
+      if(adminBack > 1){masterDockSelect();}  //két 1-es gombnyomásra vissza az admin felületre
+      }
       break;
     
     case '2':
@@ -621,6 +635,15 @@ void dockCheck(){
 //Zár feloldás------------------------------------------------------------------------
 void unlockDock(){
 
+//Ha nincs jelszó-------------------------------------------
+      if (scanPassword(dockInt, "") == true){
+        drawScreen(15);
+        delay(5000);
+        unlockingClosedDock(); 
+        mainMenu(); //Ha nincs jelszó, és zárva van a kapu (dockCheck alacsony szint), akkor nyitja és visszatér a főmenübe 
+      }
+//----------------------------------------------------------
+
 setStar = "";
 
 i = true;
@@ -632,10 +655,6 @@ while(i){
 key = keypad.getKey();
 
 watchIdleSwitch();
-
-if(mainBack > 1){mainMenu();} //két 0 gombnyomásra vissza a főmenübe
-
-if(adminBack > 1){masterDockSelect();}  //két 1-es gombnyomásra vissza az admin felületre
 
 if (key){ 
 
@@ -652,7 +671,10 @@ if (key){
       setStar += '*';
       counter++;
     }
-    else {mainBack++;}
+    else {
+      mainBack++;
+      if(mainBack > 1){mainMenu();} //két 0 gombnyomásra vissza a főmenübe
+      }
       break;
     
     case '1':
@@ -662,7 +684,10 @@ if (key){
       setStar += '*';
       counter++;
     }
-    else {adminBack++;}
+    else {
+      adminBack++;
+      if(adminBack > 1){masterDockSelect();}  //két 1-es gombnyomásra vissza az admin felületre
+      }
       break;
     
     case '2':
@@ -751,17 +776,6 @@ if (key){
         adminBack = 0;
         i = false; 
       }
-//Ha nincs jelszó-------------------------------------------
-      else if (scanPassword(dockInt, "") == true){
-        drawScreen(15);
-        delay(5000);
-        unlockingClosedDock(); 
-        counter = 0;
-        mainBack = 0;
-        adminBack = 0;
-        i = false; 
-      }
-//----------------------------------------------------------
       else if (scanPassword(dockInt, secPassword) == false){
         drawScreen(10);        
         delay(5000);
@@ -794,7 +808,7 @@ if (key){
  }
 }
   writeUses(dockInt, unixTime); //Parkolási idő mentése csv fájlba az adott dokkhoz.
-  mainMenu();
+  delPIN(); //Jelszó törlése és vissza a főmenübe
 }
 
 //Jelszó és dokk ellenőrzés a kiíratáshoz------------------------------------------
@@ -863,10 +877,6 @@ key = keypad.getKey();
 
 watchIdleSwitch();
 
-if(mainBack > 1){mainMenu();} //két 0 gombnyomásra vissza a főmenübe
-
-if(adminBack > 1){masterDockSelect();}  //két 1-es gombnyomásra vissza az admin felületre
-
 if (key){
 
   resetIdleSwitch();
@@ -880,7 +890,10 @@ if (key){
       setStar += '*';
       counter++;
     }
-    else {mainBack++;}
+    else {
+      mainBack++;
+      if(mainBack > 1){mainMenu();} //két 0 gombnyomásra vissza a főmenübe
+      }
       break;
     
     case '1':
@@ -890,7 +903,10 @@ if (key){
       setStar += '*';
       counter++;
     }
-    else {adminBack++;}
+    else {
+      adminBack++;
+      if(adminBack > 1){masterDockSelect();}  //két 1-es gombnyomásra vissza az admin felületre
+      }
       break;
     
     case '2':
@@ -1009,10 +1025,6 @@ key = keypad.getKey();
 
 watchIdleSwitch();
 
-if(mainBack > 1){mainMenu();} //két 0 gombnyomásra vissza a főmenübe
-
-if(adminBack > 1){masterDockSelect();}  //két 1-es gombnyomásra vissza az admin felületre
-
 if (key){ 
 
   resetIdleSwitch();
@@ -1026,7 +1038,10 @@ if (key){
       setStar += '*';
       counter++;
     }
-    else {mainBack++;}
+    else {
+      mainBack++;
+      if(mainBack > 1){mainMenu();} //két 0 gombnyomásra vissza a főmenübe
+      }
       break;
     
     case '1':
@@ -1036,7 +1051,10 @@ if (key){
       setStar += '*';
       counter++;
     }
-    else {adminBack++;}
+    else {
+      adminBack++;
+      if(adminBack > 1){masterDockSelect();}  //két 1-es gombnyomásra vissza az admin felületre
+      }
       break;
     
     case '2':
@@ -1370,8 +1388,6 @@ key = keypad.getKey();
 
 watchIdleSwitch();
 
-if(mainBack > 1){mainMenu();} //két 0 gombnyomásra vissza a főmenübe
-
 if (key){ 
   
   resetIdleSwitch(); 
@@ -1386,7 +1402,10 @@ if (key){
       setDock += 0;
       counter++;
     }
-    else {mainBack++;}
+    else {
+      mainBack++;
+      if(mainBack > 1){mainMenu();} //két 0 gombnyomásra vissza a főmenübe
+      }
       break;
     
     case '1':
@@ -1502,8 +1521,6 @@ key = keypad.getKey();
 
 watchIdleSwitch();
 
-if(mainBack > 1){mainMenu();} //két 0 gombnyomásra vissza a főmenübe
-
 if (key){ 
 
   resetIdleSwitch();
@@ -1517,7 +1534,10 @@ if (key){
       setStar += '*';
       counter++;
     }
-    else {mainBack++;}
+    else {
+      mainBack++;
+      if(mainBack > 1){mainMenu();} //két 0 gombnyomásra vissza a főmenübe
+      }
       break;
     
     case '1':
@@ -1714,7 +1734,7 @@ void drawScreen(char drawState){
     case 6:
     u8g.drawStr( 0, 26, " \xcd""rd be a feloldani");
     u8g.drawStr( 0, 36, " k""\xed""v""\xe1""nt"" dokk sz""\xe1""m""\xe1""t""!");
-    u8g.drawStr( 0, 47, " # OK     * T""\x94""rl""\xe9""s");
+    u8g.drawStr( 0, 47, " # OK       * Torl""\xe9""s");  //ö - 94 HEX
     break;
     case 7:
     u8g.drawStr( 0, 25, "   K""\xe9""rlek add meg a   ");
@@ -1768,10 +1788,10 @@ void drawScreen(char drawState){
     u8g.drawStr( 0, 47, "       jelsz""\xf3""t!       ");
     break;
     case 15:
-    u8g.drawStr( 0, 19, " Nincs folyamatban ");
-    u8g.drawStr( 0, 30, " parkol""\xe1""s! ");
-    u8g.drawStr( 0, 41, " K""\xe9""rlek hagyd ");
-    u8g.drawStr( 0, 52, " nyitva a kaput! ");
+    u8g.drawStr( 0, 19, "  Nincs folyamatban ");
+    u8g.drawStr( 0, 30, "      parkol""\xe1""s! ");
+    u8g.drawStr( 0, 41, "    K""\xe9""rlek hagyd ");
+    u8g.drawStr( 0, 52, "   nyitva a kaput! ");
     break;
     default:
     break;
