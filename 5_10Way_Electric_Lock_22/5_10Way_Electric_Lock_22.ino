@@ -245,7 +245,7 @@ void setup(){
   drawScreen(0);
   delay(1000);
 
-  while (!SD.begin(53)) {
+  while (!SD.begin(53)) { //SD kártya automatikus felismerése
     drawScreen(2);
   }
   
