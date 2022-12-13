@@ -14,6 +14,7 @@
  * * *  V8 * 2022.12.08. * * * *
  * * * * * * * * * * * * * * * */
 
+//A 486-os sortól van kikommentelve a 8-9-es dokkválasztó
 //A szükséges állomást kell definiálni
 //#define TENWAY
 #define FIVEWAY
@@ -482,7 +483,7 @@ if (key){
     }
       break;
     
-    case '8':
+/*    case '8':
     buzzer();
     if((counter < 2) && (dockInt < 1)){
       setDock += 8;
@@ -496,7 +497,7 @@ if (key){
       setDock += 9;
       counter++;
     }
-      break;
+      break;*/
 #endif    
     case OK:
     buzzer();
