@@ -483,14 +483,14 @@ if (key){
     }
       break;
     
-/*    case '8':
+    case '8':
     buzzer();
     if((counter < 2) && (dockInt < 1)){
       setDock += 8;
       counter++;
     }
       break;
-    
+    /*
     case '9':
     buzzer();
     if((counter < 2) && (dockInt < 1)){
@@ -613,12 +613,12 @@ void dockCheck(){
     unixTime = unixTime - unixTime7;
     unlockDock();
     }
-  else if ((digitalRead(S7) == HIGH) && (dockInt == 8)){
+  else if ((digitalRead(S7) == LOW) && (dockInt == 8)){ //meg lett cserélve a logika
     getRTCtime();
     unixTime8 = unixTime;
     newPassword();
     }
-  else if ((digitalRead(S7) == LOW)  && (dockInt == 8)){
+  else if ((digitalRead(S7) == HIGH)  && (dockInt == 8)){
     getRTCtime();
     unixTime = unixTime - unixTime8;
     unlockDock();
